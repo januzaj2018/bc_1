@@ -1,4 +1,9 @@
 #import "@preview/cetz:0.4.2": canvas, draw
+#import "@preview/codly:1.3.0": *
+#import "@preview/codly-languages:0.1.1": *
+// #import "@preview/codelst:2.0.2": sourcecode, codelst
+#show: codly-init.with()
+
 #set page(
   paper: "a4",
   margin: (x: 2.5cm, y: 2.5cm),
@@ -11,11 +16,59 @@
   lang: "en"
 )
 
+
+
+#show raw.where(block: false): set text(
+  font: ("Cascadia Code", "DejaVu Sans Mono", "Linux Biolinum"),
+  weight: "semibold",
+  fill: rgb("#d73a49")
+)
+#show raw.where(block: false): box.with(
+  fill: rgb("#fff5f5"),
+  inset: (x: 3pt, y: 0pt),
+  outset: (y: 3pt),
+  radius: 3pt
+)
+
 // Colors
 #let primary-color = rgb("#007FFF") 
 #let accent-color = rgb("#00B9E8")  
 #let code-bg = rgb("#f1f2f6")       
 #let border-color = rgb("#dcdde1")
+#let code-fg        = rgb("#2e3440")
+
+#let explain-term(title, summary: none, details) = {
+  v(0.5em)
+  block(
+    fill: rgb("#f8f9fb"),
+    stroke: (left: 2pt + border-color),
+    inset: 0.8em,
+    radius: 3pt,
+    width: 100%,
+    [
+      // Term title
+      #text(weight: "bold", fill: primary-color)[#title]
+
+      // Short one‑line summary
+     #if summary != none {
+       v(0.25em)
+      text(style: "italic", fill: rgb("#555"))[ #summary ]
+     }
+          // Longer explanation body
+      #v(0.25em)
+      #details
+    ]
+  )
+}
+// Code 
+// z
+#codly(languages: codly-languages )
+#show raw.where(lang: "powershell"): it => {
+  set text(fill: rgb("#012456"))
+  it
+}
+#codly(number-format: (n) =>[#text(luma(0))[#str(n)]] )
+#show raw: set text(font: "Cascadia Code")
 
 // Headings
 #show heading: set text(fill: primary-color, font: "Linux Biolinum")
@@ -81,8 +134,8 @@
   #v(1em)
 
   *Aibek* \
-
-  #datetime.today().display()
+  
+  SE-2419 
   
   #v(1em)
   #line(length: 50%, stroke: 1pt )
@@ -343,13 +396,83 @@ In this way, the immutability of the blockchain is guaranteed by cryptography bu
 ]
 
 #question("3. Transparency vs. Privacy")[
-  Evaluate blockchain transparency vs. privacy. Compare Bitcoin vs. Ethereum and explain mixers, stealth addresses, and ZK proofs.
+  Evaluate blockchain transparency vs. privacy. 
+  - Compare Bitcoin vs. Ethereum 
+  - Explain mixers, stealth addresses, and ZK proofs.
 ]
+
 
 #answer[
-  // [YOUR ANSWER HERE]
-]
+  ==== Blockchain Transparency vs. Privacy
+Blockchain technology in its very nature supports transparency. Transparency is considered the primary attribute since the global digital ledger used for recording transactions is accessible and verifiable by all. This common and checkable data creates trust between the parties and ensures that there is always evidence because all the information is capable of being traced. Thus, transparency together with immutability creates an environment that does not need the involvement of third-party intermediaries which results in lower costs and faster processing. 
 
+The conflict between transparency and privacy is evident; on one hand, the decentralization of the network renders intermediaries unnecessary, on the other hand, the requirement for digital cash to be decentralized implies that both accountability (the prevention of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless, the very nature of blockchain guarantees that each transaction is public and can be verified. In a public blockchain scenario, which is characterized by wide geographical distribution and lack of trust, there might be some bad actors that try to listen in; therefore, in these situations, encryption is the standard method used to ensure confidentiality.
+
+  ==== Comparison of Bitcoin and Ethereum
+
+When Bitcoin and Ethereum are fundamentally different in their approach, in terms of both purpose and consensus mechanism, one finds the real point of comparison coming with transaction throughput, speed, and other performance metrics.
+
+
+ #table(
+    columns: (1.1fr, 3fr, 3fr),
+    fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
+    inset: 10pt,
+    [**], [*Bitcoin*], [*Ethereum*],
+[Purpose],
+[A credible alternative to traditional fiat currencies (medium of exchange, potential store of value)],
+[A platform to run programmatic contracts and applications via Ether],
+[Consensus],
+[Proof-of-Work (PoW)],
+[Proof-of-Stake (PoS) (as per forecast, reflecting the transition)],
+[Transaction Model],
+[Unspent Transaction Output (UTXO). Your balance is the sum of all distinct, unspent outputs, which must be spent entirely in a single transaction],
+[Account-based model (Externally Owned Accounts and Contract Accounts),. An account holds a single balance that increases or decreases],
+[Block Time],
+[10 minutes on average],
+[12 seconds on average],
+[TPS],
+[3-7 transactions per second],
+[10-30 transactions per second],
+[Supply],
+[Finite supply, capped at 21 million BTC],
+[No fixed maximum supply; issuance to validators but some ETH is burned, sometimes making supply net‑deflationary],
+  )]
+#explain-term(
+   "Mixers",
+  summary: "Services or protocols that break the on‑chain link between source and destination of funds.",
+   [
+    Mixers take the coins from a lot of users and mix them up so that it is hard to
+    identify which output is from which input. 
+    For Bitcoin, this is usually done through collaborative transactions (like CoinJoin),
+    whereas for Ethereum, mixers mostly rely on smart contracts that take deposits and
+    later let people withdraw to a new address using a secret.
+    On the one hand, mixers enhance privacy; on the other hand, they can create compliance and legal issues if used to hide illegal money.
+  ]
+)
+
+#explain-term(
+"Stealth address",
+  [
+Stealth addresses hide the connection between a receiver's public identity and the 
+  real address that receives funds. Thus, they protect the privacy of the recipient 
+  rather than that of the sender or the amount. The usual scenario is that the receiver 
+  discloses some long term public key data, the sender and the receiver produce a one-time 
+  payment address using a Diffie–Hellman like key agreement and a derivation scheme, which makes it 
+  appear to the blockchain as if the recipient is using a new random address that is not easily associated 
+  with them. This provides a level of privacy comparable to using a new 
+  address for each payment but with on-chain derivation and optional scanning keys, so only the recipient 
+  can recognize and spend from these stealth outputs.
+],
+summary:  "Stealth addresses generate unique, one-time payment addresses through cryptographic key agreements. This ensures the recipient's privacy by making it impossible to trace the connection between their public identity and on-chain transactions."
+)
+#explain-term(
+"ZK proofs and privacy",
+  []
+
+)
+```python 
+print("Hello, World!")
+```
 #question("4. DApp Architecture")[
   Define DApp architecture in detail. Describe interactions between Smart Contracts, Off-chain backend, Frontend, Wallets, and Nodes.
 ]
