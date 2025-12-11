@@ -10,64 +10,42 @@
   numbering: "1",
 )
 
-#set text(
-  font: "Linux Libertine",
-  size: 11pt,
-  lang: "en"
-)
+#set text(font: "Linux Libertine", size: 11pt, lang: "en")
 
-
-
-#show raw.where(block: false): set text(
-  font: ("Cascadia Code", "DejaVu Sans Mono", "Linux Biolinum"),
-  weight: "semibold",
-  fill: rgb("#d73a49")
-)
-#show raw.where(block: false): box.with(
-  fill: rgb("#fff5f5"),
-  inset: (x: 3pt, y: 0pt),
-  outset: (y: 3pt),
-  radius: 3pt
-)
+#show raw.where(block: false): set text(font: ("Cascadia Code", "DejaVu Sans Mono", "Linux Biolinum"), weight: "semibold", fill: rgb("#d73a49"))
+#show raw.where(block: false): box.with(fill: rgb("#fff5f5"), inset: (x: 3pt, y: 0pt), outset: (y: 3pt), radius: 3pt)
 
 // Colors
-#let primary-color = rgb("#007FFF") 
-#let accent-color = rgb("#00B9E8")  
-#let code-bg = rgb("#f1f2f6")       
+#let primary-color = rgb("#007FFF")
+#let accent-color = rgb("#00B9E8")
+#let code-bg = rgb("#f1f2f6")
 #let border-color = rgb("#dcdde1")
-#let code-fg        = rgb("#2e3440")
+#let code-fg = rgb("#2e3440")
 
 #let explain-term(title, summary: none, details) = {
   v(0.5em)
-  block(
-    fill: rgb("#f8f9fb"),
-    stroke: (left: 2pt + border-color),
-    inset: 0.8em,
-    radius: 3pt,
-    width: 100%,
-    [
-      // Term title
-      #text(weight: "bold", fill: primary-color)[#title]
+  block(fill: rgb("#f8f9fb"), stroke: (left: 2pt + border-color), inset: 0.8em, radius: 3pt, width: 100%, [
+    // Term title
+    #text(weight: "bold", fill: primary-color)[#title]
 
-      // Short one‑line summary
-     #if summary != none {
-       v(0.25em)
+    // Short one‑line summary
+    #if summary != none {
+      v(0.25em)
       text(style: "italic", fill: rgb("#555"))[ #summary ]
-     }
-          // Longer explanation body
-      #v(0.25em)
-      #details
-    ]
-  )
+    }
+    // Longer explanation body
+    #v(0.25em)
+    #details
+  ])
 }
 // Code 
 // z
-#codly(languages: codly-languages )
+#codly(languages: codly-languages)
 #show raw.where(lang: "powershell"): it => {
   set text(fill: rgb("#012456"))
   it
 }
-#codly(number-format: (n) =>[#text(luma(0))[#str(n)]] )
+#codly(number-format: (n) => [#text(luma(0))[#str(n)]])
 #show raw: set text(font: "Cascadia Code")
 
 // Headings
@@ -81,38 +59,24 @@
 
 #let question(title, body) = {
   v(1em)
-  block(
-    fill: rgb("#f5fbfd"),
-    stroke: (left: 3pt + accent-color),
-    inset: 1em,
-    width: 100%,
-    radius: 4pt,
-    [
-      #text(weight: "bold", fill: primary-color)[== #title] \
-      #body
-    ]
-  )
+  block(fill: rgb("#f5fbfd"), stroke: (left: 3pt + accent-color), inset: 1em, width: 100%, radius: 4pt, [
+    #text(weight: "bold", fill: primary-color)[== #title] \
+    #body
+  ])
 }
 
 #let answer(body) = {
-  block(
-    width: 100%,
-    inset: (left: 1em),
-    [#text(style: "italic", fill: rgb("#555"))[Answer:] \ #body]
-  )
+  block(width: 100%, inset: (left: 1em), [#text(style: "italic", fill: rgb("#555"))[Answer:] \
+  #body])
 }
 
 #let img_placeholder(height_val, caption_text) = {
   align(center)[
-    #rect(
-      width: 80%, 
-      height: height_val, 
-      fill: rgb("#f8f9fa"), 
-      stroke: (dash: "dashed", paint: rgb("#ccc")),
-      radius: 5pt
-    )[
+    #rect(width: 80%, height: height_val, fill: rgb("#f8f9fa"), stroke: (dash: "dashed", paint: rgb("#ccc")), radius: 5pt)[
       #align(center + horizon)[
-        #text(fill: rgb("#999"))[#text(size: 20pt)[📷] \ Replace with: #caption_text \ (Use `#image("filename.png")`)]
+        #text(fill: rgb("#999"))[#text(size: 20pt)[📷] \
+        Replace with: #caption_text \
+        (Use `#image("filename.png")`)]
       ]
     ]
     #text(size: 9pt, style: "italic")[Figure: #caption_text]
@@ -124,361 +88,434 @@
 // ==========================================
 
 #align(center + horizon)[
-  #text(size: 24pt, weight: "bold", fill: primary-color)[Blockchain Technologies 1]
-  
+  #text(size: 24pt, weight: "bold", fill: primary-color)[Blockchain Technologies
+  1]
+
   #v(1em)
   #text(size: 16pt)[Assignment - 1]
-  
+
   #v(2em)
-  #line(length: 50%, stroke: 1pt )
+  #line(length: 50%, stroke: 1pt)
   #v(1em)
 
   *Aibek* \
-  
-  SE-2419 
-  
+
+  SE-2419
+
   #v(1em)
-  #line(length: 50%, stroke: 1pt )
+  #line(length: 50%, stroke: 1pt)
 ]
 
 #pagebreak()
-#outline(indent: auto,
-depth: 2)
+#outline(indent: auto, depth: 2)
 #pagebreak()
 
 // ==========================================
 // MODULE 1: INTRODUCTION
 // ==========================================
+
 = Module 1: Introduction to Blockchain Technology
 
- #question("1. Distributed vs. Centralized Ledgers")[
-  Explain how a distributed ledger differs from a centralized ledger in terms of trust, confidentiality, fault-tolerance, and attack surface. Provide at least 3 real-world examples for each.
+#question("1. Distributed vs. Centralized Ledgers")[
+  Explain how a distributed ledger differs from a centralized ledger in terms of
+  trust, confidentiality, fault-tolerance, and attack surface. Provide at least 3
+  real-world examples for each.
 ]
 #set par(first-line-indent: 1em)
 #answer[
 
- The essential discrepancy between distributed ledger (DL), commonly represented by blockchain technology, and centralized ledger (CL), usually a traditional database, is their architecture and the mechanisms they use for data integrity and coordination. A centralized system has clients that are connected to a single central server governed by an administrator, while a distributed ledger network is based on the peer-to-peer model where control as well as data distribution occur across many nodes. 
-  
-=== Trust   
+  The essential discrepancy between distributed ledger (DL), commonly represented
+  by blockchain technology, and centralized ledger (CL), usually a traditional database,
+  is their architecture and the mechanisms they use for data integrity and coordination.
+  A centralized system has clients that are connected to a single central server
+  governed by an administrator, while a distributed ledger network is based on the
+  peer-to-peer model where control as well as data distribution occur across many
+  nodes.
 
-==== Centralized Ledger:
-  #list(
-    [#strong[Trust Model]: Centralized systems rely on a trust-based model. Trust is implicitly or explicitly placed in a single central authority, administrator, or intermediary (like a bank) who manages the entire system and controls the data],
-[#strong[Technical Reasoning]: The integrity and authenticity of the ledger are maintained exclusively by this single entity, meaning there is no technical guarantee against malicious actions by the controller]
+  === Trust
+
+  ==== Centralized Ledger:
+  #list([#strong[Trust Model]: Centralized systems rely on a trust-based model. Trust
+  is implicitly or explicitly placed in a single central authority, administrator,
+  or intermediary (like a bank) who manages the entire system and controls the data], [#strong[Technical
+  Reasoning]: The integrity and authenticity of the ledger are maintained exclusively
+  by this single entity, meaning there is no technical guarantee against malicious
+  actions by the controller])
+
+  ==== Distributed Ledger:
+  - #strong[Trust Model]: Distributed ledgers operate on a trustless model (or distributed
+    trust). Trust is established and maintained through cryptographic security and
+    a consensus mechanism rather than relying on a single third party,,. Participants
+    collectively agree on the state of the network.
+  - #strong[ Technical Reasoning: ] Consensus protocols (like Proof-of-Work or Byzantine
+    Fault Tolerance variants) ensure that new records are added only if participants
+    collectively agree to do so. Transparency, where all participants possess the
+    same verifiable information, reinforces this trust among participants
+
+  #figure(
+    canvas(length: 1cm, {
+      import draw: *
+
+      // Central server box
+      rect((0, 0), (12, 2.5), fill: rgb("#e3f2fd"), stroke: blue + 2pt, name: "server")
+      content("server.center", padding: .4, [Central Server], weight: "bold", size: 14pt)
+
+      // Client positions (hand-placed for a nice symmetric look)
+      let positions = (
+        (2, 6),
+        // top-left
+        (4.5, 7),
+        // top
+        (7.5, 7),
+        // top-right
+        (10, 6),
+        // right-top
+        (9.5, 4),
+        // right-bottom
+        (2.5, 4),
+        // left-bottom
+      )
+
+      for (i, pos) in positions.enumerate() {
+        line(pos, "server", stroke: (paint: gray, thickness: 1.3pt))
+        // Draw client circle
+        circle(pos, radius: .65, fill: luma(230), stroke: luma(100) + 1.5pt, name: "c" + str(i))
+        content("c" + str(i), [Client], size: 11pt)
+
+        // Simple line from client to the edge of the server box
+        // Optional arrow pointing to server:
+        // line(pos, "server", mark: (end: ">"), stroke: (paint: gray, thickness: 1.3pt))
+      }
+
+      // Caption below the canvas
+    }),
+    caption: [Centralized Ledger (CL): Single Point of Control],
+  )
+  #figure(
+    canvas(length: 1cm, {
+      import draw: *
+
+      // 7 nodes arranged in a nice circle (classic decentralized/P2P look)
+      let n = 7
+      let radius = 4.2
+      let center = (6, 5)
+
+      for i in range(n) {
+        let angle = i * 360deg / n - 90deg
+        let pos = (center.at(0) + radius * calc.cos(angle), center.at(1) + radius * calc.sin(angle))
+
+        // Draw client node
+        circle(pos, radius: .7, fill: luma(230), stroke: luma(80) + 1.8pt, name: "node" + str(i))
+        content("node" + str(i), [Client], size: 11pt, weight: "semibold")
+      }
+
+      // Connect each node to every other node (full mesh = fully decentralized)
+      // We only draw connections i → j where j > i to avoid duplicates
+      for i in range(n) {
+        for j in range(i + 1, n) {
+          draw.on-layer(-1, line("node" + str(i), "node" + str(j), stroke: (paint: gray, thickness: 1.1pt, dash: "densely-dotted")))
+        }
+      }
+      // Optional: highlight that it's a full mesh
+      // You can reduce connections if too cluttered (e.g., only connect to nearest 3–4 neighbors)
+    }),
+    caption: [Decentralized Ledger (DL): No Single Point of Control],
   )
 
-==== Distributed Ledger:
-- #strong[Trust Model]: Distributed ledgers operate on a trustless model (or distributed trust). Trust is established and maintained through cryptographic security and a consensus mechanism rather than relying on a single third party,,. Participants collectively agree on the state of the network.
-- #strong[ Technical Reasoning: ] Consensus protocols (like Proof-of-Work or Byzantine Fault Tolerance variants) ensure that new records are added only if participants collectively agree to do so. Transparency, where all participants possess the same verifiable information, reinforces this trust among participants
+  === Confidentiality
 
+  ==== Centralized Ledger (CL):
+  - #strong[ Data Access: ] The central authority is responsible for maintaining
+    confidentiality and the access control policies established by it are the means
+    through which this is done. The data is so to speak owned by the controlling
+    entity, and access is limited to a few select individuals.
+  - #strong[ Technical Reasoning: ] The central server’s data security utilizes traditional
+    methods such as authentication, access control, and physical security measures.
 
+  ==== Distributed Ledger (DL):
+  - #strong[ Data Access: ] Confidentiality is a big issue and very different for
+    each type of DL:
 
+    - Public (Permissionless) DLs has the main concern of transparency, thus all
+      transactions are recorded in a shared, publicly available digital ledger. The
+      user identities are usually anonymous but the transaction data is generally
+      public.
 
+    - Private/Consortium (Permissioned) DLs have the access limited only to the known
+      participants, thus providing both confidentiality and transparency only within
+      that group.
 
-#figure(
-  canvas(length: 1cm, {
-    import draw: *
+  - #strong[ Technical Reasoning: ] Cryptography is the main source of security for
+    confidentiality and uses methods like encryption to the communication links (in
+    transit) or the data when it is stored (at rest)
 
-    // Central server box
-    rect((0,0), (12,2.5), fill: rgb("#e3f2fd"), stroke: blue + 2pt, name: "server")
-    content("server.center", padding: .4, [Central Server], weight: "bold", size: 14pt)
+  === Fault-tolerance
 
-    // Client positions (hand-placed for a nice symmetric look)
-    let positions = (
-      (2, 6),    // top-left
-      (4.5, 7),  // top
-      (7.5, 7),  // top-right
-      (10, 6),   // right-top
-      (9.5, 4),  // right-bottom
-      (2.5, 4),  // left-bottom
+  ==== Centralized Ledger (CL):
+  - #strong[Resilience:] Centralized systems have very low fault tolerance as it
+    is based on the one and only central server. This is exactly what a single point
+    of failure means.
+  - #strong[ Technical Reasoning: ] When the only central node ceases to function,
+    the whole database becomes user-unreachable. The system is stuck because there
+    is no distributed copy or coordinated failover, which is not the case since the
+    core design is not supporting it.
+
+  ==== Distributed Ledger (DL):
+  - #strong[Resilience:] High fault-tolerance is the very property of distributed
+    ledgers. The reason is that the data being distributed over many nodes, and the
+    system is still available and on-going if one or more nodes go down.
+  - #strong[ Technical Reasoning: ] Replication is the way to bring about fault tolerance.
+    Typically, distributed systems that require consensus operate based on strict
+    thresholds to guarantee safety, such as N≥3F+1 for tolerating Byzantine faults
+    (where N is total nodes and F is faulty nodes). The system achieves liveness
+    as long as a majority or a sufficient quorum of non-faulty nodes remains up and
+    running and continues to process requests
+
+  === Attack Surface
+
+  ==== Centralized Ledger (CL):
+
+  - #strong[ Vulnerability: ] The entire attack surface is concentrated in one single
+    point-the central authority.
+  - #strong[ Technical Reasoning: ] In total, an invader aspiring to disrupt, corrupt,
+    or freeze the system will only have to take over the central node (the database,
+    API endpoints, or the governing administrator)together with the system. Once
+    the point of failure is breached, the hacker has full control of the data and
+    system operations,.
+
+  ==== Distributed Ledger (DL):
+  - #strong[ Vulnerability: ] The network's overall security is based on the fact
+    that all participating nodes are the points of attack. Through cryptographic
+    hashing, the data is secured so that a chain is formed which is almost impossible
+    to alter and which has very high resistance to penetration through tampering.
+
+  - #strong[ Technical Reasoning: ] An adversary who wants to execute a devastating
+    attack must first break the economic barriers and seize the control of a considerable
+    part of the network which usually means a supermajority or more than 50% of the
+    computational power (in Proof of Work networks like Bitcoin) or over one-third
+    of the total validator stake/nodes (in BFT/PoS networks). Changing a record is
+    practically impossible because its hash is linked to consecutive blocks, hence
+    altering one record requires recalculating the hashes of all subsequent blocks,
+    making data tampering-proof.
+
+    // Tip: Use a table for comparison
+    #table(
+      columns: (auto, 1fr, 1fr),
+      fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+      inset: 10pt,
+      [*Feature*],       [*Centralized Ledger*],          [*Distributed Ledger*],
+      [Trust],           [Relies on a single authority],  [Trust is distributed among
+      nodes],
+      [Confidentiality], [High (Owner controls access)],  [Varies (Public vs. Permissioned)],
+      [Fault-tolerance], [Low (Single point of failure)], [High (Redundancy)],
+      [Attack Surface],  [Central server is the target],  [Consensus mechanism/Nodes],
     )
 
-    for (i, pos) in positions.enumerate() {
-      line(pos, "server", stroke: (paint: gray, thickness: 1.3pt))
-      // Draw client circle
-      circle(pos, radius: .65, fill: luma(230), stroke: luma(100) + 1.5pt, name: "c" + str(i))
-      content("c" + str(i), [Client], size: 11pt)
-
-      // Simple line from client to the edge of the server box
-      // Optional arrow pointing to server:
-      // line(pos, "server", mark: (end: ">"), stroke: (paint: gray, thickness: 1.3pt))
-    }
-
-    // Caption below the canvas
-  }),
-  caption: [Centralized Ledger (CL): Single Point of Control],
-)
-#figure(
-  canvas(length: 1cm, {
-    import draw: *
-
-    // 7 nodes arranged in a nice circle (classic decentralized/P2P look)
-    let n = 7
-    let radius = 4.2
-    let center = (6, 5)
-
-    for i in range(n) {
-      let angle = i * 360deg / n - 90deg
-      let pos = (center.at(0) + radius * calc.cos(angle),
-                 center.at(1) + radius * calc.sin(angle))
-
-      // Draw client node
-      circle(pos, radius: .7, fill: luma(230), stroke: luma(80) + 1.8pt, name: "node" + str(i))
-      content("node" + str(i), [Client], size: 11pt, weight: "semibold")
-    }
-
-    // Connect each node to every other node (full mesh = fully decentralized)
-    // We only draw connections i → j where j > i to avoid duplicates
-    for i in range(n) {
-      for j in range(i + 1, n) {
-      draw.on-layer(-1, line("node" + str(i), "node" + str(j),
-             stroke: (paint: gray, thickness: 1.1pt, dash: "densely-dotted"))
-)
-              }
-    }
-    // Optional: highlight that it's a full mesh
-    // You can reduce connections if too cluttered (e.g., only connect to nearest 3–4 neighbors)
-  }),
-  caption: [Decentralized Ledger (DL): No Single Point of Control],
-)
-
-
-=== Confidentiality
-
-==== Centralized Ledger (CL):
-- #strong[ Data Access: ] The central authority is responsible for maintaining confidentiality and the access control policies established by it are the means through which this is done. The data is so to speak owned by the controlling entity, and access is limited to a few select individuals.
-- #strong[ Technical Reasoning: ] The central server’s data security utilizes traditional methods such as authentication, access control, and physical security measures.
-
-==== Distributed Ledger (DL):
-- #strong[ Data Access: ] Confidentiality is a big issue and very different for each type of DL:
-
-    - Public (Permissionless) DLs has the main concern of transparency, thus all transactions are recorded in a shared, publicly available digital ledger. The user identities are usually anonymous but the transaction data is generally public.
-  
-    - Private/Consortium (Permissioned) DLs have the access limited only to the known participants, thus providing both confidentiality and transparency only within that group.
-
-- #strong[ Technical Reasoning: ] Cryptography is the main source of security for confidentiality and uses methods like encryption to the communication links (in transit) or the data when it is stored (at rest)
-
-=== Fault-tolerance
-
-==== Centralized Ledger (CL):
-- #strong[Resilience:] Centralized systems have very low fault tolerance as it is based on the one and only central server. This is exactly what a single point of failure means.
-- #strong[ Technical Reasoning: ] When the only central node ceases to function, the whole database becomes user-unreachable. The system is stuck because there is no distributed copy or coordinated failover, which is not the case since the core design is not supporting it.
-
-==== Distributed Ledger (DL):
-- #strong[Resilience:] High fault-tolerance is the very property of distributed ledgers. The reason is that the data being distributed over many nodes, and the system is still available and on-going if one or more nodes go down.
-- #strong[ Technical Reasoning: ] Replication is the way to bring about fault tolerance. Typically, distributed systems that require consensus operate based on strict thresholds to guarantee safety, such as N≥3F+1 for tolerating Byzantine faults (where N is total nodes and F is faulty nodes). The system achieves liveness as long as a majority or a sufficient quorum of non-faulty nodes remains up and running and continues to process requests
-  
-=== Attack Surface
-
-==== Centralized Ledger (CL):
-
-- #strong[ Vulnerability: ] The entire attack surface is concentrated in one single point-the central authority.
-- #strong[ Technical Reasoning: ] In total, an invader aspiring to disrupt, corrupt, or freeze the system will only have to take over the central node (the database, API endpoints, or the governing administrator)together with the system. Once the point of failure is breached, the hacker has full control of the data and system operations,.
-
-==== Distributed Ledger (DL):
-- #strong[ Vulnerability: ] The network's overall security is based on the fact that all participating nodes are the points of attack. Through cryptographic hashing, the data is secured so that a chain is formed which is almost impossible to alter and which has very high resistance to penetration through tampering.
-
-- #strong[ Technical Reasoning: ] An adversary who wants to execute a devastating attack must first break the economic barriers and seize the control of a considerable part of the network which usually means a supermajority or more than 50% of the computational power (in Proof of Work networks like Bitcoin) or over one-third of the total validator stake/nodes (in BFT/PoS networks). Changing a record is practically impossible because its hash is linked to consecutive blocks, hence altering one record requires recalculating the hashes of all subsequent blocks, making data tampering-proof.
-  
-  // Tip: Use a table for comparison
-  #table(
-    columns: (auto, 1fr, 1fr),
-    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
-    inset: 10pt,
-    [*Feature*], [*Centralized Ledger*], [*Distributed Ledger*],
-    [Trust], [Relies on a single authority], [Trust is distributed among nodes],
-    [Confidentiality], [High (Owner controls access)], [Varies (Public vs. Permissioned)],
-    [Fault-tolerance], [Low (Single point of failure)], [High (Redundancy)],
-    [Attack Surface], [Central server is the target], [Consensus mechanism/Nodes],
-  )
-  
-  *Real-World Examples:*
- #table(
-    columns: (1.3fr, 2fr, 2fr,3fr),
-    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
-    inset: 10pt,
-    [*Ledger Type*], [*Trust*], [*Confidentiality*],[*Fault-Tolerance*],
-    [Centralized], [Traditional Banking Systems (like SWIFT, single bank ledgers)], [Corporate ERP Systems (data managed by the company)], [Traditional Web2 Applications (for example, a service running on one cloud server/database)],
-    [Distributed], [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum (Public DApp platform using smart contracts and consensus)],[Consortium Blockchains (like supply chain solutions involving several organizations using permissioned networks)],
- )
+    *Real-World Examples:*
+    #table(
+      columns: (1.3fr, 2fr, 2fr, 3fr),
+      fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+      inset: 10pt,
+      [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*],                                                   [*Fault-Tolerance*],
+      [Centralized],   [Traditional Banking Systems (like SWIFT, single bank ledgers)],   [Corporate
+      ERP Systems (data managed by the company)],                 [Traditional Web2
+      Applications (for example, a service running on one cloud server/database)],
+      [Distributed],   [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum
+      (Public DApp platform using smart contracts and consensus)], [Consortium Blockchains
+      (like supply chain solutions involving several organizations using permissioned
+      networks)],
+    )
 ]
 
 #question("2. Definition of Immutability")[
-  Provide a rigorous technical definition of immutability. Explain how hash functions contribute to this and describe one scenario where immutability fails.
+  Provide a rigorous technical definition of immutability. Explain how hash functions
+  contribute to this and describe one scenario where immutability fails.
 ]
 
 #answer[
-  
-Immutability in a blockchain refers to an unalterable and non-removable transaction after it has been confirmed and included in a block that belongs to the canonical chain. The ledger is only for adding new transactions: newly processed blocks can only be added one after another, and the entire history is kept permanently. Mistakes are not rectified by replacing them in the past, but rather with the addition of new reversing transactions.
 
-How Hash Chaining Ensures Immutability
-The link between the blocks is established with the cryptographic hash of the preceding block:
+  Immutability in a blockchain refers to an unalterable and non-removable transaction
+  after it has been confirmed and included in a block that belongs to the canonical
+  chain. The ledger is only for adding new transactions: newly processed blocks can
+  only be added one after another, and the entire history is kept permanently. Mistakes
+  are not rectified by replacing them in the past, but rather with the addition of
+  new reversing transactions.
 
-An alteration of even 1 bit in a past block dramatically changes its hash (avalanche effect).
+  How Hash Chaining Ensures Immutability
+  The link between the blocks is established with the cryptographic hash of the preceding
+  block:
 
-This leads to the "previous hash" reference in the next block being broken.
+  An alteration of even 1 bit in a past block dramatically changes its hash (avalanche
+  effect).
 
-To cover up the tampering, a hacker needs to perform the same intense computing work that involves re-mining the compromised block plus all the consecutive blocks.
+  This leads to the "previous hash" reference in the next block being broken.
 
-In a Proof-of-Work system, the massive power cost needed makes this practically impossible.
+  To cover up the tampering, a hacker needs to perform the same intense computing
+  work that involves re-mining the compromised block plus all the consecutive blocks.
 
-==== Diagram illustration
+  In a Proof-of-Work system, the massive power cost needed makes this practically
+  impossible.
 
 
-#figure(
-  canvas(length: 1cm, {
-    import draw: *
+  #figure(
+    canvas(length: 1cm, {
+      import draw: *
 
-    // Block positions
-    let positions = ((1, 4), (7, 4), (13, 4))
-    let labels = ("Block n-1", "Block n", "Block n+1")
-    let ids = ("prev", "current", "next")
+      // Block positions
+      let positions = ((1, 4), (7, 4), (13, 4))
+      let labels = ("Block n-1", "Block n", "Block n+1")
+      let ids = ("prev", "current", "next")
 
-    // Draw the three blocks
-    for (i, pos) in positions.enumerate() {
-      let id = ids.at(i)
+      // Draw the three blocks
+      for (i, pos) in positions.enumerate() {
+        let id = ids.at(i)
 
-      // Main block rectangle
-      rect(pos, (pos.at(0)+5, pos.at(1)+4),
-           fill: rgb("#e3f2fd"),
-           stroke: blue + 2pt,
-           radius: 0.4,
-           name: id)
+        // Main block rectangle
+        rect(pos, (pos.at(0) + 5, pos.at(1) + 4), fill: rgb("#e3f2fd"), stroke: blue + 2pt, radius: 0.4, name: id)
 
-      // Block title
-      content((pos.at(0)+2.5, pos.at(1)+3.4), labels.at(i), weight: "bold")
+        // Block title
+        content((pos.at(0) + 2.5, pos.at(1) + 3.4), labels.at(i), weight: "bold")
 
-      // Generic content
-      content((pos.at(0)+2.5, pos.at(1)+2.2), [
-        Transactions\
-        Nonce, Timestamp, etc.
-      ], anchor: "north")
+        content((pos.at(0) + 2.5, pos.at(1) + 2.5), [
+          Header, Previous Block \ Adress, Timestamp, Nonce,\ Merkel Root 
+        ], anchor: "north")
 
-      // Previous Hash field (except first block)
-      if i > 0 {
-        content((pos.at(0)+2.5, pos.at(1)+0.8),
-          text(fill: red.darken(50%), weight: "bold")[
-            Previous Hash = #if i == 1 { ( text("Hash" + sub("n-1")) )} else { text("Hash" + sub("n")) }
-          ],
-          anchor: "north")
+        // Previous Hash field (except first block)
+        if i > 0 {
+          content((pos.at(0) + 2.5, pos.at(1) + 0.8), text(fill: red.darken(50%), weight: "bold")[
+            Previous Hash = #if i == 1 { ( text("Hash" + sub("n-1")) ) } else { text("Hash" + sub("n")) }
+          ], anchor: "north")
+        }
       }
-    }
 
-    // Hash arrows pointing right
-    line((6, 5.8), (7, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
-    content((5, 6.1), [Hash], weight: "semibold")
+      // Hash arrows pointing right
+      line((6, 5.8), (7, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
+      content((6.5, 6.1), [#text(size:0.8em)[Hash]], weight: "semibold")
 
-    line((12, 5.8), (13, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
-    content((11, 6.1), [Hash], weight: "semibold")
+      line((12, 5.8), (13, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
+      content((12.5, 6.1), [#text(size:0.8em)[Hash]], weight: "semibold")
 
-    // Dotted chain lines below blocks
-    line((1, 3), (18, 3), stroke: (paint: gray, dash: "densely-dotted", thickness: 1.5pt))
+      // Dotted chain lines below blocks
+      line((1, 3), (18, 3), stroke: (paint: gray, dash: "densely-dotted", thickness: 1.5pt))
 
-    // Caption
-    content((9.5, 2.5), [Blockchain Hash Chaining – Enforcing Immutability])
-  }),
-  caption: [
-    Each block stores the hash of the previous block (in red). \
-    Modifying any block changes its hash, breaking the chain.
-  ],
-)
+      // Caption
+      content((9.5, 2.5), [Blockchain Hash Chaining – Enforcing Immutability])
+    }),
+    caption: [
+      Each block stores the hash of the previous block (in red). \
+      Modifying any block changes its hash, breaking the chain.
+    ],
+  )
 
-Immutability isn't absolute—it's economic finality. Suppose an adversary gains control of the hash power of the network that is more than 50%.
+  Immutability isn't absolute—it's economic finality. Suppose an adversary gains
+  control of the hash power of the network that is more than 50%.
 
-They first make the transaction public and then create a hidden chain that does not include that transaction and is longer than the public one.
-When the hidden chain is revealed, the participants in the network apply the longest-chain rule and accept it.
-The time of the original transaction is then erased from the canonical history → successful double-spend.
+  They first make the transaction public and then create a hidden chain that does
+  not include that transaction and is longer than the public one.
+  When the hidden chain is revealed, the participants in the network apply the longest-chain
+  rule and accept it.
+  The time of the original transaction is then erased from the canonical history
+  → successful double-spend.
 
-In this way, the immutability of the blockchain is guaranteed by cryptography but the costs that have to be borne for acquiring majority hash power finally determine the security.
-  
+  In this way, the immutability of the blockchain is guaranteed by cryptography but
+  the costs that have to be borne for acquiring majority hash power finally determine
+  the security.
+
 ]
 
 #question("3. Transparency vs. Privacy")[
-  Evaluate blockchain transparency vs. privacy. 
-  - Compare Bitcoin vs. Ethereum 
+  Evaluate blockchain transparency vs. privacy.
+  - Compare Bitcoin vs. Ethereum
   - Explain mixers, stealth addresses, and ZK proofs.
 ]
 
+#answer[ ==== Blockchain Transparency vs. Privacy
+Blockchain technology in its very nature supports transparency. Transparency is considered
+the primary attribute since the global digital ledger used for recording transactions
+is accessible and verifiable by all. This common and checkable data creates trust
+between the parties and ensures that there is always evidence because all the information
+is capable of being traced. Thus, transparency together with immutability creates
+an environment that does not need the involvement of third-party intermediaries which
+results in lower costs and faster processing.
 
-#answer[
-  ==== Blockchain Transparency vs. Privacy
-Blockchain technology in its very nature supports transparency. Transparency is considered the primary attribute since the global digital ledger used for recording transactions is accessible and verifiable by all. This common and checkable data creates trust between the parties and ensures that there is always evidence because all the information is capable of being traced. Thus, transparency together with immutability creates an environment that does not need the involvement of third-party intermediaries which results in lower costs and faster processing. 
+The conflict between transparency and privacy is evident; on one hand, the decentralization
+of the network renders intermediaries unnecessary, on the other hand, the requirement
+for digital cash to be decentralized implies that both accountability (the prevention
+of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless,
+the very nature of blockchain guarantees that each transaction is public and can
+be verified. In a public blockchain scenario, which is characterized by wide geographical
+distribution and lack of trust, there might be some bad actors that try to listen
+in; therefore, in these situations, encryption is the standard method used to ensure
+confidentiality.
 
-The conflict between transparency and privacy is evident; on one hand, the decentralization of the network renders intermediaries unnecessary, on the other hand, the requirement for digital cash to be decentralized implies that both accountability (the prevention of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless, the very nature of blockchain guarantees that each transaction is public and can be verified. In a public blockchain scenario, which is characterized by wide geographical distribution and lack of trust, there might be some bad actors that try to listen in; therefore, in these situations, encryption is the standard method used to ensure confidentiality.
+==== Comparison of Bitcoin and Ethereum
 
-  ==== Comparison of Bitcoin and Ethereum
+When Bitcoin and Ethereum are fundamentally different in their approach, in terms
+of both purpose and consensus mechanism, one finds the real point of comparison coming
+with transaction throughput, speed, and other performance metrics.
 
-When Bitcoin and Ethereum are fundamentally different in their approach, in terms of both purpose and consensus mechanism, one finds the real point of comparison coming with transaction throughput, speed, and other performance metrics.
+#table(
+  columns: (1.1fr, 3fr, 3fr),
+  fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
+  inset: 10pt,
+  [],                  [*Bitcoin*],                               [*Ethereum*],
+  [Purpose],           [A credible alternative to traditional fiat currencies (medium
+  of exchange, potential store of value)],                                          [A
+  platform to run programmatic contracts and applications via Ether],
+  [Consensus],         [Proof-of-Work (PoW)],                     [Proof-of-Stake
+  (PoS) (as per forecast, reflecting the transition)],
+  [Transaction Model], [Unspent Transaction Output (UTXO). Your balance is the sum
+  of all distinct, unspent outputs, which must be spent entirely in a single transaction],                                          [Account-based
+  model (Externally Owned Accounts and Contract Accounts),. An account holds a single
+  balance that increases or decreases],
+  [Block Time],        [10 minutes on average],                   [12 seconds on
+  average],
+  [TPS],               [3-7 transactions per second],             [10-30 transactions
+  per second],
+  [Supply],            [Finite supply, capped at 21 million BTC], [No fixed maximum
+  supply; issuance to validators but some ETH is burned, sometimes making supply
+  net‑deflationary],
+)]
+#explain-term("Mixers", summary: "Services or protocols that break the on‑chain link between source and destination of funds.", [
+  Mixers take the coins from a lot of users and mix them up so that it is hard to
+  identify which output is from which input.
+  For Bitcoin, this is usually done through collaborative transactions (like CoinJoin),
+  whereas for Ethereum, mixers mostly rely on smart contracts that take deposits
+  and
+  later let people withdraw to a new address using a secret.
+  On the one hand, mixers enhance privacy; on the other hand, they can create compliance
+  and legal issues if used to hide illegal money.
+])
 
-
- #table(
-    columns: (1.1fr, 3fr, 3fr),
-    fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
-    inset: 10pt,
-    [], [*Bitcoin*], [*Ethereum*],
-[Purpose],
-[A credible alternative to traditional fiat currencies (medium of exchange, potential store of value)],
-[A platform to run programmatic contracts and applications via Ether],
-[Consensus],
-[Proof-of-Work (PoW)],
-[Proof-of-Stake (PoS) (as per forecast, reflecting the transition)],
-[Transaction Model],
-[Unspent Transaction Output (UTXO). Your balance is the sum of all distinct, unspent outputs, which must be spent entirely in a single transaction],
-[Account-based model (Externally Owned Accounts and Contract Accounts),. An account holds a single balance that increases or decreases],
-[Block Time],
-[10 minutes on average],
-[12 seconds on average],
-[TPS],
-[3-7 transactions per second],
-[10-30 transactions per second],
-[Supply],
-[Finite supply, capped at 21 million BTC],
-[No fixed maximum supply; issuance to validators but some ETH is burned, sometimes making supply net‑deflationary],
-  )]
-#explain-term(
-   "Mixers",
-  summary: "Services or protocols that break the on‑chain link between source and destination of funds.",
-   [
-    Mixers take the coins from a lot of users and mix them up so that it is hard to
-    identify which output is from which input. 
-    For Bitcoin, this is usually done through collaborative transactions (like CoinJoin),
-    whereas for Ethereum, mixers mostly rely on smart contracts that take deposits and
-    later let people withdraw to a new address using a secret.
-    On the one hand, mixers enhance privacy; on the other hand, they can create compliance and legal issues if used to hide illegal money.
-  ]
-)
-
-#explain-term(
-"Stealth address",
-  [
-Stealth addresses hide the connection between a receiver's public identity and the 
-  real address that receives funds. Thus, they protect the privacy of the recipient 
-  rather than that of the sender or the amount. The usual scenario is that the receiver 
-  discloses some long term public key data, the sender and the receiver produce a one-time 
-  payment address using a Diffie–Hellman like key agreement and a derivation scheme, which makes it 
-  appear to the blockchain as if the recipient is using a new random address that is not easily associated 
-  with them. This provides a level of privacy comparable to using a new 
-  address for each payment but with on-chain derivation and optional scanning keys, so only the recipient 
+#explain-term("Stealth address", [
+  Stealth addresses hide the connection between a receiver's public identity and
+  the
+  real address that receives funds. Thus, they protect the privacy of the recipient
+  rather than that of the sender or the amount. The usual scenario is that the receiver
+  discloses some long term public key data, the sender and the receiver produce a
+  one-time
+  payment address using a Diffie–Hellman like key agreement and a derivation scheme,
+  which makes it
+  appear to the blockchain as if the recipient is using a new random address that
+  is not easily associated
+  with them. This provides a level of privacy comparable to using a new
+  address for each payment but with on-chain derivation and optional scanning keys,
+  so only the recipient
   can recognize and spend from these stealth outputs.
-],
-summary:  "Stealth addresses generate unique, one-time payment addresses through cryptographic key agreements. This ensures the recipient's privacy by making it impossible to trace the connection between their public identity and on-chain transactions."
-)
-#explain-term(
-"ZK proofs and privacy",
-  []
-
-)
+], summary: "Stealth addresses generate unique, one-time payment addresses through cryptographic key agreements. This ensures the recipient's privacy by making it impossible to trace the connection between their public identity and on-chain transactions.")
+#explain-term("ZK proofs and privacy", [])
 ```python 
 print("Hello, World!")
 ```
 #question("4. DApp Architecture")[
-  Define DApp architecture in detail. Describe interactions between Smart Contracts, Off-chain backend, Frontend, Wallets, and Nodes.
+  Define DApp architecture in detail. Describe interactions between Smart Contracts,
+  Off-chain backend, Frontend, Wallets, and Nodes.
 ]
 
 #answer[
   // [YOUR ANSWER HERE]
   #img_placeholder(4cm, "DApp Architecture Diagram")
-  
+
   *Component Interactions:*
   - *Smart Contract Layer:* ...
   - *Wallets:* ...
@@ -502,18 +539,19 @@ print("Hello, World!")
 
   *2. Linux Terminal Output:*
   #raw(lang: "bash", block: true, "Paste your sha256sum output here")
-  
+
   *Comparison:* // Explain why they are identical
 ]
 
 #question("2. Collision Resistance")[
-  Demonstrate collision resistance by modifying one bit of input. Explain the avalanche effect and the birthday paradox.
+  Demonstrate collision resistance by modifying one bit of input. Explain the avalanche
+  effect and the birthday paradox.
 ]
 
 #answer[
   *Original Hash:* `[Paste Hash]` \
   *Modified Hash:* `[Paste New Hash]`
-  
+
   The hashes are drastically different because...
 
   *Probability of Collision:*
@@ -531,12 +569,13 @@ print("Hello, World!")
 = Module 3: Developer Environment Setup
 
 #question("Activity Requirements")[
-  Set up a blockchain environment (Node.js, npm, VS Code). Initialize a project and install `web3`, `ethers`, `crypto-js`.
+  Set up a blockchain environment (Node.js, npm, VS Code). Initialize a project and
+  install `web3`, `ethers`, `crypto-js`.
 ]
 
 #answer[
   *Package Installation & Version Check:*
-  
+
   #img_placeholder(6cm, "Screenshot of Terminal (node -v, npm -v) and package.json")
 
   *Package Explanation:*
@@ -554,30 +593,31 @@ print("Hello, World!")
 = Module 4: Models & Architecture
 
 #question("1. Bitcoin's UTXO Model")[
-  Draw a diagram of UTXO flow. Explain script validation, parallelism, and stateless validation.
+  Draw a diagram of UTXO flow. Explain script validation, parallelism, and stateless
+  validation.
 ]
 
 #answer[
   #img_placeholder(5cm, "UTXO Flow Diagram")
-  
+
   *Script Validation Steps:*
   1. ...
   2. ...
 ]
 
 #question("2. Ethereum's Account Model")[
-  Explain EOA vs. Contract Accounts. Describe nonce, balance, storage, codeHash. Provide a JSON example.
+  Explain EOA vs. Contract Accounts. Describe nonce, balance, storage, codeHash.
+  Provide a JSON example.
 ]
 
 #answer[
   *Account State JSON Example:*
-  
-]
-  
 
+]
 
 #question("3. Security Implications")[
-  Analyze Replay vulnerabilities, Transaction malleability, Double-spend handling, Smart contract attack surface, and State bloat.
+  Analyze Replay vulnerabilities, Transaction malleability, Double-spend handling,
+  Smart contract attack surface, and State bloat.
 ]
 
 #answer[
@@ -593,16 +633,15 @@ print("Hello, World!")
 ]
 
 #question("5. Smart Contracts")[
-  Explain gas cost model and storage. Why are writes expensive? Provide code optimization example.
+  Explain gas cost model and storage. Why are writes expensive? Provide code optimization
+  example.
 ]
 
 #answer[
   *Inefficient Code:*
-  
 
   *Optimized Code:*
-  
-  
+
   *Explanation:* ...
 ]
 
@@ -629,22 +668,22 @@ print("Hello, World!")
 
 #answer[
   *Selected Blockchain:* Ethereum/Bitcoin
-  
+
   *Transaction Hash:* `0x...`
 
   *Decoded Fields:*
   #table(
     columns: (1fr, 2fr),
     inset: 8pt,
-    [*Field*], [*Value / Explanation*],
-    [Nonce], [...],
-    [Gas Price], [...],
-    [Gas Limit], [...],
-    [Value], [...],
+    [*Field*],    [*Value / Explanation*],
+    [Nonce],      [...],
+    [Gas Price],  [...],
+    [Gas Limit],  [...],
+    [Value],      [...],
     [Data/Input], [...],
-    [To], [...],
+    [To],         [...],
   )
-  
+
   *Logic Explanation:*
   // Explain how gas was calculated or UTXO consumed
 ]
