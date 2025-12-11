@@ -205,9 +205,8 @@ depth: 2)
     }
 
     // Caption below the canvas
-    content((6, -0.5), [Centralized Ledger (CL): Single Point of Control], size: 12pt)
   }),
-  caption: [Diagram: Centralized Control],
+  caption: [Centralized Ledger (CL): Single Point of Control],
 )
 #figure(
   canvas(length: 1cm, {
@@ -232,16 +231,15 @@ depth: 2)
     // We only draw connections i → j where j > i to avoid duplicates
     for i in range(n) {
       for j in range(i + 1, n) {
-        line("node" + str(i), "node" + str(j),
+      draw.on-layer(-1, line("node" + str(i), "node" + str(j),
              stroke: (paint: gray, thickness: 1.1pt, dash: "densely-dotted"))
-      }
+)
+              }
     }
-
     // Optional: highlight that it's a full mesh
     // You can reduce connections if too cluttered (e.g., only connect to nearest 3–4 neighbors)
-    content((6, -0.4), [Decentralized Ledger (DL): No Single Point of Control], size: 13pt)
   }),
-  caption: [Diagram: Decentralized / Peer-to-Peer Network],
+  caption: [Decentralized Ledger (DL): No Single Point of Control],
 )
 
 
@@ -417,7 +415,7 @@ When Bitcoin and Ethereum are fundamentally different in their approach, in term
     columns: (1.1fr, 3fr, 3fr),
     fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
     inset: 10pt,
-    [**], [*Bitcoin*], [*Ethereum*],
+    [], [*Bitcoin*], [*Ethereum*],
 [Purpose],
 [A credible alternative to traditional fiat currencies (medium of exchange, potential store of value)],
 [A platform to run programmatic contracts and applications via Ether],
