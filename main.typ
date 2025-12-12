@@ -4,6 +4,7 @@
 // #import "@preview/codelst:2.0.2": sourcecode, codelst
 #show: codly-init.with()
 
+#set par(first-line-indent: 1em)
 #set page(
   paper: "a4",
   margin: (x: 2.5cm, y: 2.5cm),
@@ -24,7 +25,9 @@
 
 #let explain-term(title, summary: none, details) = {
   v(0.5em)
-  block(fill: rgb("#f8f9fb"), stroke: (left: 2pt + border-color), inset: 0.8em, radius: 3pt, width: 100%, [
+  block(// uncomment for the background, idk it looks like questions
+  //fill: rgb("#f8f9fb"), stroke: (left: 2pt + border-color), 
+  inset: 0.8em, radius: 3pt, width: 100%, [
     // Term title
     #text(weight: "bold", fill: primary-color)[#title]
 
@@ -38,6 +41,9 @@
     #details
   ])
 }
+#let accent(txt) = {
+  text(weight: "bold", fill: primary-color)[#block(spacing: 0.5em)#txt\ ]
+}
 // Code 
 // z
 #codly(languages: codly-languages)
@@ -47,7 +53,6 @@
 }
 #codly(number-format: (n) => [#text(luma(0))[#str(n)]])
 #show raw: set text(font: "Cascadia Code")
-
 // Headings
 #show heading: set text(fill: primary-color, font: "Linux Biolinum")
 #show heading.where(level: 1): it => [
@@ -60,7 +65,7 @@
 #let question(title, body) = {
   v(1em)
   block(fill: rgb("#f5fbfd"), stroke: (left: 3pt + accent-color), inset: 1em, width: 100%, radius: 4pt, [
-    #text(weight: "bold", fill: primary-color)[== #title] \
+    #text(weight: "bold", fill: primary-color)[== #title]
     #body
   ])
 }
@@ -121,7 +126,6 @@
   trust, confidentiality, fault-tolerance, and attack surface. Provide at least 3
   real-world examples for each.
 ]
-#set par(first-line-indent: 1em)
 #answer[
 
   The essential discrepancy between distributed ledger (DL), commonly represented
@@ -298,33 +302,39 @@
     altering one record requires recalculating the hashes of all subsequent blocks,
     making data tampering-proof.
 
-    // Tip: Use a table for comparison
-    #table(
-      columns: (auto, 1fr, 1fr),
-      fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
-      inset: 10pt,
-      [*Feature*],       [*Centralized Ledger*],          [*Distributed Ledger*],
-      [Trust],           [Relies on a single authority],  [Trust is distributed among
-      nodes],
-      [Confidentiality], [High (Owner controls access)],  [Varies (Public vs. Permissioned)],
-      [Fault-tolerance], [Low (Single point of failure)], [High (Redundancy)],
-      [Attack Surface],  [Central server is the target],  [Consensus mechanism/Nodes],
-    )
+  // Tip: Use a table for comparison
+  #figure(table(
+    columns: (auto, 1fr, 1fr),
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    align: left,
+    inset: 10pt,
+    [*Feature*],       [*Centralized Ledger*],          [*Distributed Ledger*],
+    [Trust],           [Relies on a single authority],  [Trust is distributed among
+    nodes],
+    [Confidentiality], [High (Owner controls access)],  [Varies (Public vs. Permissioned)],
+    [Fault-tolerance], [Low (Single point of failure)], [High (Redundancy)],
+    [Attack Surface],  [Central server is the target],  [Consensus mechanism/Nodes],
+  ), caption: [
+    CL vs DL (feautres)
+  ])
 
-    *Real-World Examples:*
-    #table(
-      columns: (1.3fr, 2fr, 2fr, 3fr),
-      fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
-      inset: 10pt,
-      [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*],                                                   [*Fault-Tolerance*],
-      [Centralized],   [Traditional Banking Systems (like SWIFT, single bank ledgers)],   [Corporate
-      ERP Systems (data managed by the company)],                 [Traditional Web2
-      Applications (for example, a service running on one cloud server/database)],
-      [Distributed],   [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum
-      (Public DApp platform using smart contracts and consensus)], [Consortium Blockchains
-      (like supply chain solutions involving several organizations using permissioned
-      networks)],
-    )
+  #figure(table(
+    columns: (1.3fr, 2fr, 2fr, 3fr),
+    align: left,
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    inset: 10pt,
+    [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*], [*Fault-Tolerance*],
+    [Centralized],   [Traditional Banking Systems (like SWIFT, single bank ledgers)],   [Corporate
+    ERP Systems (data managed by the company)],                    [Traditional Web2
+    Applications (for example, a service running on one cloud server/database)],
+    [Distributed],   [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum
+    (Public DApp platform using smart contracts and consensus)],                    [Consortium
+    Blockchains
+    (like supply chain solutions involving several organizations using permissioned
+    networks)],
+  ), caption: [
+    Real-World Examples
+  ])
 ]
 
 #question("2. Definition of Immutability")[
@@ -356,7 +366,6 @@
   In a Proof-of-Work system, the massive power cost needed makes this practically
   impossible.
 
-
   #figure(
     canvas(length: 1cm, {
       import draw: *
@@ -377,7 +386,9 @@
         content((pos.at(0) + 2.5, pos.at(1) + 3.4), labels.at(i), weight: "bold")
 
         content((pos.at(0) + 2.5, pos.at(1) + 2.5), [
-          Header, Previous Block \ Adress, Timestamp, Nonce,\ Merkel Root 
+          Header, Previous Block \
+          Adress, Timestamp, Nonce,\
+          Merkel Root
         ], anchor: "north")
 
         // Previous Hash field (except first block)
@@ -390,10 +401,10 @@
 
       // Hash arrows pointing right
       line((6, 5.8), (7, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
-      content((6.5, 6.1), [#text(size:0.8em)[Hash]], weight: "semibold")
+      content((6.5, 6.1), [#text(size: 0.8em)[Hash]], weight: "semibold")
 
       line((12, 5.8), (13, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
-      content((12.5, 6.1), [#text(size:0.8em)[Hash]], weight: "semibold")
+      content((12.5, 6.1), [#text(size: 0.8em)[Hash]], weight: "semibold")
 
       // Dotted chain lines below blocks
       line((1, 3), (18, 3), stroke: (paint: gray, dash: "densely-dotted", thickness: 1.5pt))
@@ -429,53 +440,64 @@
   - Explain mixers, stealth addresses, and ZK proofs.
 ]
 
-#answer[ ==== Blockchain Transparency vs. Privacy
-Blockchain technology in its very nature supports transparency. Transparency is considered
-the primary attribute since the global digital ledger used for recording transactions
-is accessible and verifiable by all. This common and checkable data creates trust
-between the parties and ensures that there is always evidence because all the information
-is capable of being traced. Thus, transparency together with immutability creates
-an environment that does not need the involvement of third-party intermediaries which
-results in lower costs and faster processing.
+#answer[
 
-The conflict between transparency and privacy is evident; on one hand, the decentralization
-of the network renders intermediaries unnecessary, on the other hand, the requirement
-for digital cash to be decentralized implies that both accountability (the prevention
-of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless,
-the very nature of blockchain guarantees that each transaction is public and can
-be verified. In a public blockchain scenario, which is characterized by wide geographical
-distribution and lack of trust, there might be some bad actors that try to listen
-in; therefore, in these situations, encryption is the standard method used to ensure
-confidentiality.
+  ==== Blockchain Transparency vs. Privacy
+  Blockchain technology in its very nature supports transparency. Transparency is
+  considered
+  the primary attribute since the global digital ledger used for recording transactions
+  is accessible and verifiable by all. This common and checkable data creates trust
+  between the parties and ensures that there is always evidence because all the information
+  is capable of being traced. Thus, transparency together with immutability creates
+  an environment that does not need the involvement of third-party intermediaries
+  which
+  results in lower costs and faster processing.
 
-==== Comparison of Bitcoin and Ethereum
+  The conflict between transparency and privacy is evident; on one hand, the decentralization
+  of the network renders intermediaries unnecessary, on the other hand, the requirement
+  for digital cash to be decentralized implies that both accountability (the prevention
+  of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless,
+  the very nature of blockchain guarantees that each transaction is public and can
+  be verified. In a public blockchain scenario, which is characterized by wide geographical
+  distribution and lack of trust, there might be some bad actors that try to listen
+  in; therefore, in these situations, encryption is the standard method used to ensure
+  confidentiality.
 
-When Bitcoin and Ethereum are fundamentally different in their approach, in terms
-of both purpose and consensus mechanism, one finds the real point of comparison coming
-with transaction throughput, speed, and other performance metrics.
+  ==== Comparison of Bitcoin and Ethereum
 
-#table(
-  columns: (1.1fr, 3fr, 3fr),
-  fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
-  inset: 10pt,
-  [],                  [*Bitcoin*],                               [*Ethereum*],
-  [Purpose],           [A credible alternative to traditional fiat currencies (medium
-  of exchange, potential store of value)],                                          [A
-  platform to run programmatic contracts and applications via Ether],
-  [Consensus],         [Proof-of-Work (PoW)],                     [Proof-of-Stake
-  (PoS) (as per forecast, reflecting the transition)],
-  [Transaction Model], [Unspent Transaction Output (UTXO). Your balance is the sum
-  of all distinct, unspent outputs, which must be spent entirely in a single transaction],                                          [Account-based
-  model (Externally Owned Accounts and Contract Accounts),. An account holds a single
-  balance that increases or decreases],
-  [Block Time],        [10 minutes on average],                   [12 seconds on
-  average],
-  [TPS],               [3-7 transactions per second],             [10-30 transactions
-  per second],
-  [Supply],            [Finite supply, capped at 21 million BTC], [No fixed maximum
-  supply; issuance to validators but some ETH is burned, sometimes making supply
-  net‑deflationary],
-)]
+  When Bitcoin and Ethereum are fundamentally different in their approach, in terms
+  of both purpose and consensus mechanism, one finds the real point of comparison
+  coming
+  with transaction throughput, speed, and other performance metrics.
+
+  #figure(table(
+    columns: (1.1fr, 3fr, 3fr),
+    align: left,
+    fill: (x, y) => if (y == 0 or x == 0) { accent-color.lighten(80%) },
+    inset: 10pt,
+    [],                  [*Bitcoin*],                               [*Ethereum*],
+    [Purpose],           [A credible alternative to traditional fiat currencies (medium
+    of exchange, potential store of value)],                                          [A
+    platform to run programmatic contracts and applications via Ether],
+    [Consensus],         [Proof-of-Work (PoW)],                     [Proof-of-Stake
+    (PoS) (as per forecast, reflecting the transition)],
+    [Transaction Model], [Unspent Transaction Output (UTXO). Your balance is the
+    sum
+    of all distinct, unspent outputs, which must be spent entirely in a single transaction],                                          [Account-based
+    model (Externally Owned Accounts and Contract Accounts),. An account holds a
+    single
+    balance that increases or decreases],
+    [Block Time],        [10 minutes on average],                   [12 seconds on
+    average],
+    [TPS],               [3-7 transactions per second],             [10-30 transactions
+    per second],
+    [Supply],            [Finite supply, capped at 21 million BTC], [No fixed maximum
+    supply; issuance to validators but some ETH is burned, sometimes making supply
+    net‑deflationary],
+  ), caption: [
+    Bitcoin vs Ethereum
+  ])
+]
 #explain-term("Mixers", summary: "Services or protocols that break the on‑chain link between source and destination of funds.", [
   Mixers take the coins from a lot of users and mix them up so that it is hard to
   identify which output is from which input.
@@ -503,22 +525,136 @@ with transaction throughput, speed, and other performance metrics.
   so only the recipient
   can recognize and spend from these stealth outputs.
 ], summary: "Stealth addresses generate unique, one-time payment addresses through cryptographic key agreements. This ensures the recipient's privacy by making it impossible to trace the connection between their public identity and on-chain transactions.")
-#explain-term("ZK proofs and privacy", [])
-```python 
-print("Hello, World!")
-```
+#explain-term("ZK proofs and privacy", [
+  Zero‑knowledge (ZK) proofs let a party prove that “this transaction or statement
+  is valid under the rules” without revealing underlying data such as which exact
+  notes are spent, which address is used, or what attribute values are. On Ethereum,
+  ZK is used in several ways:​
+
+  - Mixers like Tornado Cash: prove “I own one of the deposits in this Merkle tree”
+    without revealing which leaf.​
+
+  - ZK-rollups and private payment/DEX systems: prove correctness of batched transactions
+    while hiding individual details.​
+
+  - ZK identity: prove properties such as age, membership, or ownership of a credential
+    without disclosing the identifier or full record, enabling Sybil-resistant yet
+    privacy-preserving identity.​
+
+  Overall, Bitcoin’s base layer leans heavily toward transparent auditability with
+  bolt‑on privacy tools, while Ethereum’s programmable environment exposes more activity
+  but also makes sophisticated privacy primitives like mixers, stealth address schemes,
+  and ZK systems first-class smart contract applications.
+])
 #question("4. DApp Architecture")[
-  Define DApp architecture in detail. Describe interactions between Smart Contracts,
-  Off-chain backend, Frontend, Wallets, and Nodes.
+  Define DApp architecture in detail. \
+  Describe how the following components interact:
+  - Smart contract layer
+  - Off-chain backend
+  - Frontend
+  - Wallets (EIP-1193 providers)
+  - Nodes (RPC, full, light)
 ]
 
 #answer[
-  // [YOUR ANSWER HERE]
-  #img_placeholder(4cm, "DApp Architecture Diagram")
+  A Decentralized Application (DApp) is a software program that runs on a blockchain
+  or a peer-to-peer (P2P) network of computers and thus does not depend on centralized
+  servers. DApps rely on smart contracts to carry out their core consumptions; in
+  this way, all operations are decentralized, transparent, and secured by cryptography.
+  One of the key differences between DApps and Web2 applications is the way they
+  handle data and business logic: the former spreads them over various nodes while
+  the latter concentrates them on one or more servers and thus gets rid of bugs,
+  allows for constant improvements, etc., at the cost of centralization.​
 
-  *Component Interactions:*
-  - *Smart Contract Layer:* ...
-  - *Wallets:* ...
+  The DApp architecture is based on three main pillars: the frontend (user interface),
+  the smart contract layer (business logic), and the blockchain (data storage).​
+
+  ==== Component Interactions in Transaction Flow
+  The transactions in a DApp come along with a structured flow starting from the
+  user input to the on-chain execution, and this is the point where the seamless
+  interactions among the components happen.
+
+  #accent[Frontend]
+  The frontend user interface (UI) is the and is usually made using web technologies
+  like HTML, CSS, and JavaScript frameworks (e.g. React). It handles the user actions
+  like transfer and swap that happen with the help of button clicks and creates the
+  transaction payload that calls the specific functions of smart contracts. In this
+  part, there are no changes of states and it acts like a bridge that connects users
+  to the blockchain with the help of libraries such as ethers.js or web3.js.​
+
+  #accent("Wallets (EIP-1193 Providers)")
+  Wallets are usually browser extensions like MetaMask and represent Externally Owned
+  Accounts (EOAs) that are controlled by private keys and follow EIP-1193 standards
+  for provider interfaces. When the frontend makes a request, the wallet asks for
+  user approval, then signs the transaction with cryptographic methods, and finally
+  estimates and pays the gas fee. The wallet then sends back the signed transaction
+  to the frontend so it can be sent out.​
+
+  #accent("Smart Contract Layer ")
+  Smart contracts (for example, on Ethereum) are an inherent part of the blockchain
+  that contain immutable bytecode executing the business logic in the Ethereum Virtual
+  Machine (EVM). When a signed transaction is available, the EVM acts on the called
+  function in accordance with the rules laid down beforehand, modifies the global
+  state (e.g. balances) and generates events for logging. The process is predictable
+  and consensus is maintained among nodes.​
+
+  #accent("Nodes (RPC, Full, Light)")
+  Nodes are the major part of the P2P blockchain network maintainers; they store
+  and validate the ledger.​
+
+  #accent("Remote Procedure Call (RPC): ")
+  Acts as the API gateway, e.g., JSON-RPC via Infura or Alchemy, facilitating transactions
+  and balance or event querying by the frontends and wallets.­
+
+  #accent("Full nodes: ")
+  Keep the complete chain history, run all transactions via EVM, block validation,
+  and consensus enforcement.­
+
+  #accent("Light nodes: ")
+  Have less resource requirements, keep only block headers and apply Simplified Payment
+  Verification (SPV) to connections with full nodes for querying without entire storage.
+
+  #figure(table(
+    columns: (0.9fr, 1.5fr, 2fr),
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    align: left,
+    inset: 8pt,
+    [*Step*],                  [*Components involved*],              [*Action*],
+    [1. Initiation],           [Frontend → Wallet],                  [UI captures
+    input; wallet signs tx~fiveable+1],
+    [2. Broadcast],            [Wallet → RPC Node],                  [Signed tx sent
+    via RPC~geeksforgeeks],
+    [3. Validation/Execution], [Full/Light Nodes → Smart Contracts], [EVM runs logic;
+    state updates~fiveable],
+    [4. Confirmation],         [Nodes → Frontend/Off-chain],         [Polling/receipts
+    update UI; events indexed~geeksforgeeks],
+  ), caption: [
+    Transaction Flow Summary
+  ])
+  This architecture ensures trustless, verifiable operations ideal for applications
+  like DeFi and NFTs.
+
+  #figure(image("ArchitectureofaDApp.png", width: 50%), caption: [
+    DApp Architecture diagram
+  ]) <architecture_of_dapp>
+  The architecture of the Decentralized Application (DApp) is presented in an uncomplicated
+  diagram (@architecture_of_dapp) consisting of three layers: first, a user actions
+  take through a frontend based on the browser, and then the frontend connects to
+  the smart contracts running in the Ethereum Virtual Machine (EVM) on the Ethereum
+  blockchain.
+
+  Moving from the top to the bottom:
+
+  - First and foremost, the user through a browser gets the frontend (HTML, CSS,
+    JavaScript) from a web server over the Internet.
+
+  - Then the frontend sends requests (such as sending transactions or calling functions)
+    to the smart contracts that have already been deployed.
+
+  - Finally, the execution of the smart contracts takes place in the Ethereum Virtual
+    Machine, which consequently updates and reads data from the Ethereum blockchain
+    thus achieving a decentralized storage of contract state and transaction history.
+
 ]
 
 #pagebreak()
@@ -530,34 +666,173 @@ print("Hello, World!")
 = Module 2: Cryptography Fundamentals
 
 #question("1. SHA-256 Computations")[
-  Compute SHA-256 hashes using Node.js, an online tool, and Linux terminal.
+  Compute SHA-256 hashes using at least two tools
 ]
 
 #answer[
+  *1. Node.js Code:*
+  #codly(zebra-fill: none)
+  #figure(```javascript
+const crypto = require('crypto');
+
+function createSHA256Hash(inputString) {
+  const hash = crypto.createHash('sha256');
+  hash.update(inputString);
+  return hash.digest('hex');
+}
+
+const myString = 'SE-2419';
+const hash = createSHA256Hash(myString);
+console.log(hash);
+  ```, supplement: "Code Block", kind: raw) <jscodehash>
+
   *1. Node.js Output:*
-  #raw(lang: "bash", block: true, "Paste your Node.js output here")
+  ```bash 
+37e9bcf9787d084d18b69f2094995c80617ce56116897fe903abc120f6dc83c8
+  ```
+  *2. Online hashing tool*
+  #figure(image("onlinehash.png", width: 60%), caption: [
+    Screenshot of online hashing website
+  ])
+  *3. Linux Terminal:*
+  #figure(
+    image("linuxhash.png"),
+  )
 
-  *2. Linux Terminal Output:*
-  #raw(lang: "bash", block: true, "Paste your sha256sum output here")
-
-  *Comparison:* // Explain why they are identical
+  #figure(```bash
+prinitf "SE-2419" | sha256sum
+37e9bcf9787d084d18b69f2094995c80617ce56116897fe903abc120f6dc83c8  -
+  ```, caption: [
+    Code
+  ]) <codebash>
 ]
 
-#question("2. Collision Resistance")[
-  Demonstrate collision resistance by modifying one bit of input. Explain the avalanche
-  effect and the birthday paradox.
+#question("2. Comparison")[
+  Write a comparison of the outputs, and explain why all must be identical despite
+  different
+  tools.
 ]
 
 #answer[
-  *Original Hash:* `[Paste Hash]` \
-  *Modified Hash:* `[Paste New Hash]`
+  The output of the computed SHA-256 hash of the string "SE-2419" was the same on
+  all three platforms: Node.js, the online hashing tool, and the Linux ```bash sha256sum```
+  utility.
 
-  The hashes are drastically different because...
+  The uniformity of the output is one of the major characteristics of cryptographic
+  hash functions and is determined by the idea of determinism.
 
-  *Probability of Collision:*
-  Using the Birthday Paradox formula:
+  Deterministic Algorithm: \
+  SHA-256 is a universally accepted deterministic mathematical algorithm that operates
+  through the application of a standard. Consequently, the hash function for any
+  particular input sequence of bits will always output a fixed-size 256-bit output.
+  It does not matter which tool, programming language, or operating system is employed
+  for the calculation as long as the strict following of the Secure Hash Standard
+  (#link("https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf")[NIST FIPS
+  180-4]) is ensured.
+
+  The Role of Byte Stream: \n If the outputs were not the same, the most likely cause
+  of the difference would be a variation in the input byte stream. For instance,
+  one tool might have included a hidden character (like a null terminator or a space)
+  that the other tools did not. But since the input byte stream for "SE-2419" was
+  the same for all methods, the hash output was the same:
+  #text(fill: red)[37e9bcf9787d084d18b69f2094995c80617ce56116897fe903abc120f6dc83c8]
   //$ P(n) \approx 1 - e^(-n^2 / (2H)) $
   // Add your calculation here
+]
+
+#question("3. Collison resistance")[
+  - Attempt to modify one bit of input
+  - Show how drastically the hash changes
+  - Explain why finding two identical SHA-256 hashes is computationally infeasible
+  - Estimate the probability of collision using the birthday paradox formula
+
+]
+#answer[
+  In a bid to showcase the collision resistance property of the SHA-256 algorithm,
+  we will take the original input "SE-2419" along with its hash and then carry out
+  a minimal alteration on the input by appending a newline character, "\n", which
+  is a minor change of only one byte in the sequence adding a single byte of value
+  0x0A.
+  This can be seen as a "one-bit" or minimal perturbation, although the adding of "\n"
+  alters 8 bits, however, it shows the avalanche character, which means that even
+  tiny input changes produce outputs that are completely different.
+  We will compute the hashes again with the same tools but with changes as per the
+  specifications: in Node.js, change the input to "SE-2419\\n"; in Linux, use ```bash echo```
+  instead of ```bash printf```, which adds a trailing newline by default.
+
+  #accent("Original Input and Hash (for Reference)")
+
+  Input: "SE-2419" (no trailing newline)
+
+  Hash: #text(fill: red)[37aeb679f9780b4d1b6f5f2949905c80617ce56116897fe98a3bc12b6fdc3bc8]
+
+  Modified Input: "SE-2419\\n" (with trailing newline)
+
+  #accent("Now, recompute with each tool:")
+
+  *Node.js Code:*
+
+  Changed the input to "SE-2419\\n" in @jscodehash:9 to
+  ```javascript 
+const myString = 'SE-2419\n';
+  ```
+  *Node.js Output: *
+  ```bash
+f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
+  ```
+
+  *Linux Terminal (using echo "SE-2419" | sha256sum):*
+  #figure(image("linux_new_hash.png"))
+  ```bash 
+  echo "SE-2419\n" | sha256sum
+  f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f  -
+  ```
+  #accent("How Drastically the Hash Changes")
+  The hash that was not altered begins with "37aeb679..." and finishes with "...6fdc3bc8".
+  On the other hand,
+  the modified hash (which is the result of adding just "\\n") will not at all resemble
+  the original hash,
+  for example, it will start with "f03d8f4d..." and there will be no similarities
+  recognized among the 64
+  hexadecimal characters. The reason for this is the avalanche effect of SHA-256,
+  which means that output
+  bits of every input bit pass through many rounds of mixing (pseudorandomness functions
+  such as bitwise operations, additions, and rotations) and they all get entangled.
+  The output is different by almost 50% in the case of a single bit flip (or 8 bits
+  added in the case of "\\n").
+
+  #accent("Why Two Identical SHA-256 Hashes Cannot Be Found Computationally")
+  A collision happens when two distinct inputs result in the same hash output. The
+  collision resistance of SHA-256 is due to the fact that it has a 256-bit output
+  space, which means there are $2^256$ possible hashes (around $1.1579 × 10^77$
+  unique values, which is a number larger than the atoms in the visible universe).
+  In order to find a collision intentionally (preimage or second preimage attack),
+  the hacker would have to brute-force search a vast number of inputs, which would
+  require computational power that is way beyond what is available with current technology.
+  Even if quantum computers were used (through Grover's algorithm), O($2^128$)
+  operations would still be required for a preimage attack, which is not practical
+  with the hardware that is expected to be available in the near future. SHA-256
+  does not have any known practical collisions (in contrast to weaker hashes like
+  MD5), and its design includes resistance to differential cryptanalysis and other
+  attacks.
+
+  #accent[Brithday Paradox Formula]
+  The birthday paradox is a classic example that demonstrates the extent to which
+  our intuition can fail when it comes to the amount of 'birthday' cases or collisions,
+  as they are called, arising in small groups of people or in this case samples of
+  random numbers.
+
+  For the case of SHA-256, assume the hash space as the "birthdays" where there are
+  d = $2^256$ possible values. The formula for the probability p of having at least
+  one collision in n random hashes is:
+  $p ≈ 1 - e^(- n^2 / (2 d))$
+
+  When p = 0.5 that is, for the case of a 50% chance of collision, we need to find $n$
+  now:
+  $n ≈ sqrt(2d × ln(2)) ≈ 1.177 × sqrt(d) = 1.177 × 2^128 ≈ 4 × 10^38$
+
+  Thus you would need to produce approximately 2^128 (340 undecillion) hashes to
+  get a 50% chance of a random collision which requires a huge energy input.
 ]
 
 #pagebreak()
