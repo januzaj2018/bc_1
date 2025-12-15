@@ -404,7 +404,7 @@
     ],
   )
 
-  Immutability isn't absolute—it's economic finality. Suppose an adversary gains
+  Immutability isn't absolute it's economic finality. Suppose an adversary gains
   control of the hash power of the network that is more than 50%.
 
   They first make the transaction public and then create a hidden chain that does
@@ -439,14 +439,14 @@
   which
   results in lower costs and faster processing.
 
-  The conflict between transparency and privacy is evident; on one hand, the decentralization
+  The conflict between transparency and privacy is evident, on one hand, the decentralization
   of the network renders intermediaries unnecessary, on the other hand, the requirement
   for digital cash to be decentralized implies that both accountability (the prevention
   of double-spends) and anonymity (the grant of privacy) have to be dealt with. Regardless,
   the very nature of blockchain guarantees that each transaction is public and can
   be verified. In a public blockchain scenario, which is characterized by wide geographical
   distribution and lack of trust, there might be some bad actors that try to listen
-  in; therefore, in these situations, encryption is the standard method used to ensure
+  in, therefore, in these situations, encryption is the standard method used to ensure
   confidentiality.
 
   #accent[ Comparison of Bitcoin and Ethereum ]
@@ -478,7 +478,7 @@
     [TPS],               [3-7 transactions per second],             [10-30 transactions
     per second],
     [Supply],            [Finite supply, capped at 21 million BTC], [No fixed maximum
-    supply; issuance to validators but some ETH is burned, sometimes making supply
+    supply, issuance to validators but some ETH is burned, sometimes making supply
     net‑deflationary],
   ), caption: [
     Bitcoin vs Ethereum
@@ -491,7 +491,7 @@
   whereas for Ethereum, mixers mostly rely on smart contracts that take deposits
   and
   later let people withdraw to a new address using a secret.
-  On the one hand, mixers enhance privacy; on the other hand, they can create compliance
+  On the one hand, mixers enhance privacy, on the other hand, they can create compliance
   and legal issues if used to hide illegal money.
 ])
 
@@ -515,17 +515,17 @@
   Zero‑knowledge (ZK) proofs let a party prove that “this transaction or statement
   is valid under the rules” without revealing underlying data such as which exact
   notes are spent, which address is used, or what attribute values are. On Ethereum,
-  ZK is used in several ways:​
+  ZK is used in several ways:
 
   - Mixers like Tornado Cash: prove “I own one of the deposits in this Merkle tree”
-    without revealing which leaf.​
+    without revealing which leaf.
 
   - ZK-rollups and private payment/DEX systems: prove correctness of batched transactions
-    while hiding individual details.​
+    while hiding individual details.
 
   - ZK identity: prove properties such as age, membership, or ownership of a credential
     without disclosing the identifier or full record, enabling Sybil-resistant yet
-    privacy-preserving identity.​
+    privacy-preserving identity.
 
   Overall, Bitcoin’s base layer leans heavily toward transparent auditability with
   bolt‑on privacy tools, while Ethereum’s programmable environment exposes more activity
@@ -545,15 +545,15 @@
 #answer[
   A Decentralized Application (DApp) is a software program that runs on a blockchain
   or a peer-to-peer (P2P) network of computers and thus does not depend on centralized
-  servers. DApps rely on smart contracts to carry out their core consumptions; in
+  servers. DApps rely on smart contracts to carry out their core consumptions, in
   this way, all operations are decentralized, transparent, and secured by cryptography.
   One of the key differences between DApps and Web2 applications is the way they
   handle data and business logic: the former spreads them over various nodes while
   the latter concentrates them on one or more servers and thus gets rid of bugs,
-  allows for constant improvements, etc., at the cost of centralization.​
+  allows for constant improvements, etc., at the cost of centralization.
 
   The DApp architecture is based on three main pillars: the frontend (user interface),
-  the smart contract layer (business logic), and the blockchain (data storage).​
+  the smart contract layer (business logic), and the blockchain (data storage).
 
   #accent[ Component Interactions in Transaction Flow ]
   The transactions in a DApp come along with a structured flow starting from the
@@ -566,7 +566,7 @@
   like transfer and swap that happen with the help of button clicks and creates the
   transaction payload that calls the specific functions of smart contracts. In this
   part, there are no changes of states and it acts like a bridge that connects users
-  to the blockchain with the help of libraries such as ethers.js or web3.js.​
+  to the blockchain with the help of libraries such as ethers.js or web3.js.
 
   #accent("Wallets (EIP-1193 Providers)")
   Wallets are usually browser extensions like MetaMask and represent Externally Owned
@@ -574,7 +574,7 @@
   for provider interfaces. When the frontend makes a request, the wallet asks for
   user approval, then signs the transaction with cryptographic methods, and finally
   estimates and pays the gas fee. The wallet then sends back the signed transaction
-  to the frontend so it can be sent out.​
+  to the frontend so it can be sent out.
 
   #accent("Smart Contract Layer ")
   Smart contracts (for example, on Ethereum) are an inherent part of the blockchain
@@ -582,11 +582,11 @@
   Machine (EVM). When a signed transaction is available, the EVM acts on the called
   function in accordance with the rules laid down beforehand, modifies the global
   state (e.g. balances) and generates events for logging. The process is predictable
-  and consensus is maintained among nodes.​
+  and consensus is maintained among nodes.
 
   #accent("Nodes (RPC, Full, Light)")
-  Nodes are the major part of the P2P blockchain network maintainers; they store
-  and validate the ledger.​
+  Nodes are the major part of the P2P blockchain network maintainers, they store
+  and validate the ledger.
 
   #accent("Remote Procedure Call (RPC): ")
   Acts as the API gateway, e.g., JSON-RPC via Infura or Alchemy, facilitating transactions
@@ -607,13 +607,13 @@
     inset: 8pt,
     [*Step*],                  [*Components involved*],              [*Action*],
     [1. Initiation],           [Frontend → Wallet],                  [UI captures
-    input; wallet signs tx~fiveable+1],
+    input, wallet signs tx~fiveable+1],
     [2. Broadcast],            [Wallet → RPC Node],                  [Signed tx sent
     via RPC~geeksforgeeks],
-    [3. Validation/Execution], [Full/Light Nodes → Smart Contracts], [EVM runs logic;
+    [3. Validation/Execution], [Full/Light Nodes → Smart Contracts], [EVM runs logic,
     state updates~fiveable],
     [4. Confirmation],         [Nodes → Frontend/Off-chain],         [Polling/receipts
-    update UI; events indexed~geeksforgeeks],
+    update UI, events indexed~geeksforgeeks],
   ), caption: [
     Transaction Flow Summary
   ])
@@ -740,7 +740,7 @@ prinitf "SE-2419" | sha256sum
   alters 8 bits, however, it shows the avalanche character, which means that even
   tiny input changes produce outputs that are completely different.
   We will compute the hashes again with the same tools but with changes as per the
-  specifications: in Node.js, change the input to "SE-2419\\n"; in Linux, use ```bash echo```
+  specifications: in Node.js, change the input to "SE-2419\\n", in Linux, use ```bash echo```
   instead of ```bash printf```, which adds a trailing newline by default.
 
   #accent("Original Input and Hash (for Reference)")
@@ -887,11 +887,12 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   #accent[UTXO (Unspent Transaction Output) Model:]
   The Unspent Transaction Output (UTXO) model treats cryptocurrency as discrete,
   unspent outputs from prior transactions, like individual coins. Each transaction
-  consumes specific UTXOs as inputs and creates new ones as outputs, ensuring atomicity—no
+  consumes specific UTXOs as inputs and creates new ones as outputs, ensuring atomicity
+  no
   partial spends. This contrasts with account-based models (e.g., Ethereum), where
   balances are mutable states.
 
-  Parallelism arises because UTXOs are independent; transactions touching disjoint
+  Parallelism arises because UTXOs are independent, transactions touching disjoint
   UTXO sets don't conflict and can validate concurrently across nodes. For instance,
   if Alice spends UTXO_A and Bob spends UTXO_B simultaneously, nodes process them
   in parallel without ordering dependencies, boosting throughput beyond sequential
@@ -955,26 +956,114 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   - The sum of input values is greater than or equal to the sum of output values
     (accounting
     for fees).
-  #accent[]
+  #accent[Stateless Validation Mechanics]
+  Stateless validation means verifying transactions without reconstructing full chain
+  state, relying only on the UTXO set a compact, Merkle-ized snapshot of unspent
+  outputs. Nodes maintain this set (e.g., ~5-6 GB for Bitcoin today), checking if
+  inputs are unspent via Merkle proofs, signatures, and value rules in constant time.
+  No account nonce tracking or global state diffs needed, unlike Ethereum's state
+  trie
+
+  This enables parallelism: multiple validators fetch disjoint UTXO proofs independently,
+  without shared state locks. In extended models like Cardano's eUTXO, scripts add
+  determinism but preserve statelessness via output-based locking, supporting parallel
+  contract execution if inputs don't overlap. FuelVM exemplifies this, splitting
+  blocks into mini-blocks for intra-block parallelism
+
+  #accent[ Scalability Benefits and Trade-offs ]
+  Combining parallelism and statelessness yields predictable gas costs and horizontal
+  scaling add nodes for more tx/s without sharding complexity. Bitcoin hits ~7 tx/s
+  sequentially but scales via larger blocks or sidechains; modern UTXO chains like
+  Nervos CKB target 1000+ tx/s via optimistic parallelism.
+
+  Trade-offs include larger signatures (one per input) and wallet complexity for
+  UTXO selection/coin control. Yet, privacy improves (e.g., CoinJoin mixes UTXOs)
+  and DoS resistance strengthens via simple validation. For layer-2 like Lightning,
+  statelessness aids watchtowers for fraud proofs.
 ]
 
 #question("2. Ethereum's Account Model")[
-  Explain EOA vs. Contract Accounts. Describe nonce, balance, storage, codeHash.
-  Provide a JSON example.
+  - Explain externally owned accounts vs. contract accounts
+  - Describe nonce, balance, storage, codeHash
+  - Provide JSON examples of account state
 ]
 
 #answer[
-  *Account State JSON Example:*
+  #accent[Account Type]
+  Externally Owned Accounts (EOAs) represent user wallets with private/public key
+  pairs, allowing direct transaction signing and ETH/token transfers without associated
+  code. They cost nothing to create and enable proactive network interactions.
 
+  Contract Accounts, or smart contracts, lack private keys and execute predefined
+  EVM bytecode only when triggered by external transactions or messages. Creating
+  them incurs gas costs due to storage usage, and their nonce tracks deployed sub-contracts.
+  #figure(
+  table(
+    columns: 3,
+    align: left,
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    [*Feature*],              [*EOA*],                 [*Contract Account*],
+    [Control],                [Private key],           [Smart contract code bitstamp],
+    [Transaction Initiation], [Yes],                   [No (reactive only) ethereum],
+    [Code],                   [None (codeHash empty)], [EVM bytecode bitstamp],
+    [Creation Cost],          [Free],                  [Gas for storage ],
+  ), caption: [EOA vs Contract Account])
+  #accent[Account State Fields:]
+  Every account stores four fields in the state trie:
+
+-  Nonce: Sequential counter preventing replay attacks. For EOAs, increments per sent
+  transaction; for contracts, tracks deployed sub-contracts.
+
+-  Balance: ETH amount in wei (1 ETH = $10^18$ wei). Transferable via transactions.
+
+-  StorageRoot: Merkle Patricia trie root hash of persistent key-value storage. Empty
+  ("```0x56e81f...```") for EOAs; holds contract state variables for contracts.
+
+-  CodeHash: Keccak-256 hash of account code. EOAs use empty string hash ```0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470```,
+  contracts reference actual bytecode.
+#accent[Verification:]
+
+```javascript 
+const { ethers } = require("ethers");
+const emptyHash = ethers.keccak256(ethers.toUtf8Bytes(""));
+console.log(emptyHash);
+  ```
+  #accent[Output:]
+  ```bash 
+0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
+  ```
+  #accent[JSON State Examples:]
+#link("https://etherscan.io/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")[Vitalik Buterin's EOA (0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 via Infura/Etherscan)]
+  ```json 
+{
+  "balance": "7539722942274336279",
+  "nonce": 1617,
+  "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+  "storageRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"
+}
+  ```
+  #link("https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")[USDC Contract (0xA0b86a33Ed3D9B54f339d1D95d7A2dD5b57b32E6):]
+  ```json 
+{
+  "balance": "1500000000000000000000000",
+  "nonce": 0,
+  "codeHash": "0x8e1e470e8456dc97b7f6b1f16d4c8f2b3f0e4a1c8b2d4e5f67890123456789ab",
+  "storageRoot": "0xdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abc"
+}
+  ```
 ]
 
-#question("3. Security Implications")[
-  Analyze Replay vulnerabilities, Transaction malleability, Double-spend handling,
-  Smart contract attack surface, and State bloat.
+#question("3. Security Implications (UTXO vs Account Models):")[
+Analyze:
+- Replay vulnerabilities
+- Transaction malleability
+- Double-spend handling
+- Smart contract attack surface
+- State bloat and scalability
 ]
 
 #answer[
-  // [YOUR ANSWER HERE]
+
 ]
 
 #question("4. EVM Architecture")[
