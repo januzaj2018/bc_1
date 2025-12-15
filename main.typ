@@ -4,6 +4,7 @@
 // #import "@preview/codelst:2.0.2": sourcecode, codelst
 #show: codly-init.with()
 
+#codly(zebra-fill: none)
 #set par(first-line-indent: 1em)
 #set page(
   paper: "a4",
@@ -17,8 +18,8 @@
 #show raw.where(block: false): box.with(fill: rgb("#fff5f5"), inset: (x: 3pt, y: 0pt), outset: (y: 3pt), radius: 3pt)
 
 // Colors
-#let primary-color = rgb("#007FFF")
-#let accent-color = rgb("#00B9E8")
+#let primary-color = rgb("2c8dbb")
+#let accent-color = rgb("#3c3325")
 #let code-bg = rgb("#f1f2f6")
 #let border-color = rgb("#dcdde1")
 #let code-fg = rgb("#2e3440")
@@ -57,6 +58,7 @@
 #show heading: set text(fill: primary-color, font: "Linux Biolinum")
 #show heading.where(level: 1): it => [
   #v(1em)
+  #pagebreak(weak: true)
   #line(length: 100%, stroke: 1pt + primary-color)
   #text(1.2em, weight: "bold", it)
   #v(0.5em)
@@ -81,17 +83,16 @@
       #align(center + horizon)[
         #text(fill: rgb("#999"))[#text(size: 20pt)[📷] \
         Replace with: #caption_text \
-        (Use `#image("filename.png")`)]
+        (Use `#image("assets/filename.png")`)]
       ]
     ]
     #text(size: 9pt, style: "italic")[Figure: #caption_text]
   ]
 }
-
 // ==========================================
 // TITLE PAGE
 // ==========================================
-
+#place(top + right, image("assets/aitu.svg", height: 3cm, scaling: "smooth"))
 #align(center + horizon)[
   #text(size: 24pt, weight: "bold", fill: primary-color)[Blockchain Technologies
   1]
@@ -161,7 +162,7 @@
       import draw: *
 
       // Central server box
-      rect((0, 0), (12, 2.5), fill: rgb("#e3f2fd"), stroke: blue + 2pt, name: "server")
+      rect((0, 0), (12, 2.5), fill: rgb("#e3f2fd"), stroke: primary-color + 2pt, name: "server")
       content("server.center", padding: .4, [Central Server], weight: "bold", size: 14pt)
 
       // Client positions (hand-placed for a nice symmetric look)
@@ -380,7 +381,7 @@
         let id = ids.at(i)
 
         // Main block rectangle
-        rect(pos, (pos.at(0) + 5, pos.at(1) + 4), fill: rgb("#e3f2fd"), stroke: blue + 2pt, radius: 0.4, name: id)
+        rect(pos, (pos.at(0) + 5, pos.at(1) + 4), fill: rgb("#e3f2fd"), stroke: primary-color + 2pt, radius: 0.4, name: id)
 
         // Block title
         content((pos.at(0) + 2.5, pos.at(1) + 3.4), labels.at(i), weight: "bold")
@@ -400,10 +401,10 @@
       }
 
       // Hash arrows pointing right
-      line((6, 5.8), (7, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
+      line((6, 5.8), (7, 5.8), mark: (end: ">"), stroke: primary-color + 1.5pt)
       content((6.5, 6.1), [#text(size: 0.8em)[Hash]], weight: "semibold")
 
-      line((12, 5.8), (13, 5.8), mark: (end: ">"), stroke: blue + 1.5pt)
+      line((12, 5.8), (13, 5.8), mark: (end: ">"), stroke: primary-color + 1.5pt)
       content((12.5, 6.1), [#text(size: 0.8em)[Hash]], weight: "semibold")
 
       // Dotted chain lines below blocks
@@ -634,7 +635,7 @@
   This architecture ensures trustless, verifiable operations ideal for applications
   like DeFi and NFTs.
 
-  #figure(image("ArchitectureofaDApp.png", width: 50%), caption: [
+  #figure(image("assets/ArchitectureofaDApp.png", width: 50%), caption: [
     DApp Architecture diagram
   ]) <architecture_of_dapp>
   The architecture of the Decentralized Application (DApp) is presented in an uncomplicated
@@ -657,8 +658,6 @@
 
 ]
 
-#pagebreak()
-
 // ==========================================
 // MODULE 2: CRYPTOGRAPHY (PRACTICE)
 // ==========================================
@@ -671,7 +670,6 @@
 
 #answer[
   *1. Node.js Code:*
-  #codly(zebra-fill: none)
   #figure(```javascript
 const crypto = require('crypto');
 
@@ -691,12 +689,12 @@ console.log(hash);
 37e9bcf9787d084d18b69f2094995c80617ce56116897fe903abc120f6dc83c8
   ```
   *2. Online hashing tool*
-  #figure(image("onlinehash.png", width: 60%), caption: [
+  #figure(image("assets/onlinehash.png", width: 60%), caption: [
     Screenshot of online hashing website
   ])
   *3. Linux Terminal:*
   #figure(
-    image("linuxhash.png"),
+    image("assets/linuxhash.png"),
   )
 
   #figure(```bash
@@ -782,7 +780,7 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   ```
 
   *Linux Terminal (using echo "SE-2419" | sha256sum):*
-  #figure(image("linux_new_hash.png"))
+  #figure(image("assets/linux_new_hash.png"))
   ```bash 
   echo "SE-2419\n" | sha256sum
   f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f  -
@@ -835,8 +833,6 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   get a 50% chance of a random collision which requires a huge energy input.
 ]
 
-#pagebreak()
-
 // ==========================================
 // MODULE 3: DEV ENVIRONMENT
 // ==========================================
@@ -849,17 +845,46 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
 ]
 
 #answer[
-  *Package Installation & Version Check:*
+  #accent[Node js version: ]
+  #image("assets/1.png", height: 3cm)
+  #accent[npm version:]
+  #image("assets/3.png", height: 3cm)
+  #accent[VS Code:]
+  #image("assets/9.png")
 
-  #img_placeholder(6cm, "Screenshot of Terminal (node -v, npm -v) and package.json")
+  #accent[Project Initialization: ]
+  #image("assets/6.png")
+  #accent[Installing packages: ]
+  #image("assets/7.png")
+  #accent[Changes in ```bash package.json```]
+  #image("assets/8.png")
 
-  *Package Explanation:*
-  - *web3:* ...
-  - *ethers:* ...
-  - *crypto-js:* ...
+  === Explanation of packages
+  #accent[web3.js]
+  web3.js is the very first and complete JavaScript library that acts as a central
+  network gateway for dApps to use JSON-RPC for node communication to the Ethereum
+  blockchain. It is necessary for both the network's data reading (e.g., checking
+  an account balance) and data writing (e.g., sending a transaction or calling a
+  smart contract function). It takes care of the low-level communication by making
+  it easy for developers to use JavaScript calls to interact with the blockchain
+  that is usually complex.
+
+  #accent[ ethers.js ]
+  ethers.js is a contemporary, security-centered option for web3.js. The main function
+  is the same: connecting to and using Ethereum. It is famous for its clean, modular
+  architecture which exclusively distinguishes the Provider (for network queries)
+  from the Signer (for private key handling and signing). This division improves
+  security. Additionally, it provides remarkable TypeScript support and powerful
+  tools for wallet management together with smooth ENS (Ethereum Name Service) integration.
+  #accent[crypto-js ]
+  crypto-js is a fully JavaScript utility library that offers secure ground-level
+  cryptographic algorithms (e.g., AES, SHA-256), among other things. Nonetheless,
+  it is not of direct assistance for blockchain interaction. Still, it helps for
+  general security needs within a dApp, like making sure data is not tampered with
+  by hashing or by encrypting and decrypting sensitive information before it is stored
+  or processed off-chain, for example. It is the security layer of the application
+  that works along the existing security features of the blockchain.
 ]
-
-#pagebreak()
 
 // ==========================================
 // MODULE 4: DEEP TECHNICAL ANSWERS
@@ -872,13 +897,7 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   validation.
 ]
 
-#answer[
-  #img_placeholder(5cm, "UTXO Flow Diagram")
-
-  *Script Validation Steps:*
-  1. ...
-  2. ...
-]
+#answer[]
 
 #question("2. Ethereum's Account Model")[
   Explain EOA vs. Contract Accounts. Describe nonce, balance, storage, codeHash.
@@ -919,8 +938,6 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
 
   *Explanation:* ...
 ]
-
-#pagebreak()
 
 // ==========================================
 // MODULE 5: LAB EXERCISE
