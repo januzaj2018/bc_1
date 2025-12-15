@@ -1,5 +1,6 @@
 #import "@preview/cetz:0.4.2": canvas, draw
 #import "@preview/codly:1.3.0": *
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/codly-languages:0.1.1": *
 // #import "@preview/codelst:2.0.2": sourcecode, codelst
 #show: codly-init.with()
@@ -14,7 +15,7 @@
 
 #set text(font: "Linux Libertine", size: 11pt, lang: "en")
 
-#show raw.where(block: false): set text(font: ("Cascadia Code", "DejaVu Sans Mono", "Linux Biolinum"), weight: "semibold", fill: rgb("#d73a49"))
+#show raw.where(block: false): set text(font: ("JetBrainsMono NF", "DejaVu Sans Mono", "Linux Biolinum"), weight: "semibold", fill: rgb("#d73a49"))
 #show raw.where(block: false): box.with(fill: rgb("#fff5f5"), inset: (x: 3pt, y: 0pt), outset: (y: 3pt), radius: 3pt)
 
 // Colors
@@ -46,7 +47,6 @@
   text(weight: "bold", fill: primary-color)[#block(spacing: 0.5em)#txt\ ]
 }
 // Code 
-// z
 #codly(languages: codly-languages)
 #show raw.where(lang: "powershell"): it => {
   set text(fill: rgb("#012456"))
@@ -54,6 +54,7 @@
 }
 #codly(number-format: (n) => [#text(luma(0))[#str(n)]])
 #show raw: set text(font: "Cascadia Code")
+
 // Headings
 #show heading: set text(fill: primary-color, font: "Linux Biolinum")
 #show heading.where(level: 1): it => [
@@ -77,18 +78,6 @@
   #body])
 }
 
-#let img_placeholder(height_val, caption_text) = {
-  align(center)[
-    #rect(width: 80%, height: height_val, fill: rgb("#f8f9fa"), stroke: (dash: "dashed", paint: rgb("#ccc")), radius: 5pt)[
-      #align(center + horizon)[
-        #text(fill: rgb("#999"))[#text(size: 20pt)[📷] \
-        Replace with: #caption_text \
-        (Use `#image("assets/filename.png")`)]
-      ]
-    ]
-    #text(size: 9pt, style: "italic")[Figure: #caption_text]
-  ]
-}
 // ==========================================
 // TITLE PAGE
 // ==========================================
@@ -112,9 +101,7 @@
   #line(length: 50%, stroke: 1pt)
 ]
 
-#pagebreak()
 #outline(indent: auto, depth: 2)
-#pagebreak()
 
 // ==========================================
 // MODULE 1: INTRODUCTION
@@ -139,7 +126,7 @@
 
   === Trust
 
-  ==== Centralized Ledger:
+  #accent[Centralized Ledger]
   #list([#strong[Trust Model]: Centralized systems rely on a trust-based model. Trust
   is implicitly or explicitly placed in a single central authority, administrator,
   or intermediary (like a bank) who manages the entire system and controls the data], [#strong[Technical
@@ -147,7 +134,7 @@
   by this single entity, meaning there is no technical guarantee against malicious
   actions by the controller])
 
-  ==== Distributed Ledger:
+  #accent[Distributed Ledger]
   - #strong[Trust Model]: Distributed ledgers operate on a trustless model (or distributed
     trust). Trust is established and maintained through cryptographic security and
     a consensus mechanism rather than relying on a single third party,,. Participants
@@ -182,14 +169,12 @@
       )
 
       for (i, pos) in positions.enumerate() {
+
         line(pos, "server", stroke: (paint: gray, thickness: 1.3pt))
         // Draw client circle
         circle(pos, radius: .65, fill: luma(230), stroke: luma(100) + 1.5pt, name: "c" + str(i))
         content("c" + str(i), [Client], size: 11pt)
 
-        // Simple line from client to the edge of the server box
-        // Optional arrow pointing to server:
-        // line(pos, "server", mark: (end: ">"), stroke: (paint: gray, thickness: 1.3pt))
       }
 
       // Caption below the canvas
@@ -229,7 +214,7 @@
 
   === Confidentiality
 
-  ==== Centralized Ledger (CL):
+  #accent[Centralized Ledger:]
   - #strong[ Data Access: ] The central authority is responsible for maintaining
     confidentiality and the access control policies established by it are the means
     through which this is done. The data is so to speak owned by the controlling
@@ -237,7 +222,7 @@
   - #strong[ Technical Reasoning: ] The central server’s data security utilizes traditional
     methods such as authentication, access control, and physical security measures.
 
-  ==== Distributed Ledger (DL):
+  #accent[Distributed Ledger:]
   - #strong[ Data Access: ] Confidentiality is a big issue and very different for
     each type of DL:
 
@@ -256,7 +241,7 @@
 
   === Fault-tolerance
 
-  ==== Centralized Ledger (CL):
+  #accent[Centralized Ledger:]
   - #strong[Resilience:] Centralized systems have very low fault tolerance as it
     is based on the one and only central server. This is exactly what a single point
     of failure means.
@@ -265,7 +250,7 @@
     is no distributed copy or coordinated failover, which is not the case since the
     core design is not supporting it.
 
-  ==== Distributed Ledger (DL):
+  #accent[Distributed Ledger:]
   - #strong[Resilience:] High fault-tolerance is the very property of distributed
     ledgers. The reason is that the data being distributed over many nodes, and the
     system is still available and on-going if one or more nodes go down.
@@ -278,7 +263,7 @@
 
   === Attack Surface
 
-  ==== Centralized Ledger (CL):
+  #accent[Centralized Ledger:]
 
   - #strong[ Vulnerability: ] The entire attack surface is concentrated in one single
     point-the central authority.
@@ -288,7 +273,7 @@
     the point of failure is breached, the hacker has full control of the data and
     system operations,.
 
-  ==== Distributed Ledger (DL):
+  #accent[Distributed Ledger:]
   - #strong[ Vulnerability: ] The network's overall security is based on the fact
     that all participating nodes are the points of attack. Through cryptographic
     hashing, the data is secured so that a chain is formed which is almost impossible
@@ -443,7 +428,7 @@
 
 #answer[
 
-  ==== Blockchain Transparency vs. Privacy
+  #accent[Blockchain Transparency vs. Privacy]
   Blockchain technology in its very nature supports transparency. Transparency is
   considered
   the primary attribute since the global digital ledger used for recording transactions
@@ -464,7 +449,7 @@
   in; therefore, in these situations, encryption is the standard method used to ensure
   confidentiality.
 
-  ==== Comparison of Bitcoin and Ethereum
+  #accent[ Comparison of Bitcoin and Ethereum ]
 
   When Bitcoin and Ethereum are fundamentally different in their approach, in terms
   of both purpose and consensus mechanism, one finds the real point of comparison
@@ -570,7 +555,7 @@
   The DApp architecture is based on three main pillars: the frontend (user interface),
   the smart contract layer (business logic), and the blockchain (data storage).​
 
-  ==== Component Interactions in Transaction Flow
+  #accent[ Component Interactions in Transaction Flow ]
   The transactions in a DApp come along with a structured flow starting from the
   user input to the on-chain execution, and this is the point where the seamless
   interactions among the components happen.
@@ -859,7 +844,7 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   #accent[Changes in ```bash package.json```]
   #image("assets/8.png")
 
-  === Explanation of packages
+  #accent[Explanation of packages]
   #accent[web3.js]
   web3.js is the very first and complete JavaScript library that acts as a central
   network gateway for dApps to use JSON-RPC for node communication to the Ethereum
@@ -890,14 +875,88 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
 // MODULE 4: DEEP TECHNICAL ANSWERS
 // ==========================================
 
-= Module 4: Models & Architecture
+= Module 4
 
 #question("1. Bitcoin's UTXO Model")[
-  Draw a diagram of UTXO flow. Explain script validation, parallelism, and stateless
-  validation.
+  - Draw a diagram of how UTXOs flow through transactions
+  - Explain script validation steps
+  - Discuss UTXO parallelism and stateless validation
 ]
 
-#answer[]
+#answer[
+  #accent[UTXO (Unspent Transaction Output) Model:]
+  The Unspent Transaction Output (UTXO) model treats cryptocurrency as discrete,
+  unspent outputs from prior transactions, like individual coins. Each transaction
+  consumes specific UTXOs as inputs and creates new ones as outputs, ensuring atomicity—no
+  partial spends. This contrasts with account-based models (e.g., Ethereum), where
+  balances are mutable states.
+
+  Parallelism arises because UTXOs are independent; transactions touching disjoint
+  UTXO sets don't conflict and can validate concurrently across nodes. For instance,
+  if Alice spends UTXO_A and Bob spends UTXO_B simultaneously, nodes process them
+  in parallel without ordering dependencies, boosting throughput beyond sequential
+  execution limits. Bitcoin nodes use this for mempool validation, achieving parallelism
+  via simple double-spend checks per UTXO.
+
+  When a transaction occurs:
+
+  - Inputs: Reference UTXOs that are being spent.
+  - Outputs: Create new UTXOs that can be spent in the future.
+    #figure(image("assets/UTXO.jpeg"), caption: [
+      An example of UTXO-based transfers in Bitcoin
+    ])
+    #figure(image("assets/UTXO (1).jpeg"), caption: [
+      Alice Sends Bob Five Bitcoins
+    ])
+  #accent[Script Validation in Bitcoin's UTXO model]
+  Bitcoin’s UTXO model relies on script validation to ensure that transactions are
+  valid and that funds are spent according to predefined conditions.
+
+  The validation process involves two types of scripts:
+  - Locking Script (ScriptPubKey): Defines the conditions required to spend a UTXO.
+    It is included in the transaction output.
+  - Unlocking Script (ScriptSig): Provides the data or signatures required to satisfy
+    the locking script. It is included in the transaction input.
+
+  #accent[ Step-by-Step Script Validation Process ]
+  #accent[\1. Transaction Structure: ]
+  A Bitcoin transaction consists of inputs (references to UTXOs being spent) and
+  outputs (new UTXOs created).
+  Each input contains an unlocking script, and each output contains a locking script.
+
+  #accent[\2. Script Execution:]
+  The unlocking script and locking script are concatenated and executed in a stack-based
+  scripting language (Bitcoin Script).
+  The execution follows a Last-In-First-Out (LIFO) stack principle, where operations
+  push or pop data from the stack.
+
+  #accent[\3. Signature Verification:]
+  For a standard Pay-to-Public-Key-Hash (P2PKH) transaction, the unlocking script
+  provides:
+  A digital signature (proving ownership of the private key).
+  A public key (to verify the signature).
+  The locking script typically contains an OP_DUP, OP_HASH160, OP_EQUALVERIFY, and
+  OP_CHECKSIG sequence to validate the signature and public key hash.
+  #accent[\4. Stack Operations: ]
+  The script engine processes each operation:
+
+  - OP_DUP: Duplicates the public key on the stack.
+  - OP_HASH160: Hashes the public key and compares it to the hash in the locking
+    script.
+  - OP_EQUALVERIFY: Ensures the hashes match.
+  - OP_CHECKSIG: Validates the signature using the public key.
+
+  If the final stack value is True, the script is valid.
+  #accent[\5. Consensus Rules: ]
+  Nodes verify that:
+
+  - The UTXO being spent exists and is unspent.
+  - The unlocking script satisfies the locking script.
+  - The sum of input values is greater than or equal to the sum of output values
+    (accounting
+    for fees).
+  #accent[]
+]
 
 #question("2. Ethereum's Account Model")[
   Explain EOA vs. Contract Accounts. Describe nonce, balance, storage, codeHash.
@@ -943,14 +1002,13 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
 // MODULE 5: LAB EXERCISE
 // ==========================================
 
-= Module 5: Wallets & Transactions
+= Module 5: Lab Exercise: Wallets & Transactions
 
 #question("Step 1: Wallet Installation")[
   Install MetaMask/Trust/Rabby. Submit screenshot of interface and public address.
 ]
 
 #answer[
-  #img_placeholder(6cm, "Wallet Interface Screenshot")
   *Public Address:* `0x...`
 ]
 
