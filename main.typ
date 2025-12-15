@@ -309,12 +309,12 @@
     align: left,
     fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
     inset: 10pt,
-    [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*], [*Fault-Tolerance*],
+    [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*],                                          [*Fault-Tolerance*],
     [Centralized],   [Traditional Banking Systems (like SWIFT, single bank ledgers)],   [Corporate
-    ERP Systems (data managed by the company)],                    [Traditional Web2
+    ERP Systems (data managed by the company)],                  [Traditional Web2
     Applications (for example, a service running on one cloud server/database)],
     [Distributed],   [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum
-    (Public DApp platform using smart contracts and consensus)],                    [Consortium
+    (Public DApp platform using smart contracts and consensus)], [Consortium
     Blockchains
     (like supply chain solutions involving several organizations using permissioned
     networks)],
@@ -463,7 +463,7 @@
     inset: 10pt,
     [],                  [*Bitcoin*],                               [*Ethereum*],
     [Purpose],           [A credible alternative to traditional fiat currencies (medium
-    of exchange, potential store of value)],                                          [A
+    of exchange, potential store of value)],  [A
     platform to run programmatic contracts and applications via Ether],
     [Consensus],         [Proof-of-Work (PoW)],                     [Proof-of-Stake
     (PoS) (as per forecast, reflecting the transition)],
@@ -973,7 +973,7 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   #accent[ Scalability Benefits and Trade-offs ]
   Combining parallelism and statelessness yields predictable gas costs and horizontal
   scaling add nodes for more tx/s without sharding complexity. Bitcoin hits ~7 tx/s
-  sequentially but scales via larger blocks or sidechains; modern UTXO chains like
+  sequentially but scales via larger blocks or sidechains, modern UTXO chains like
   Nervos CKB target 1000+ tx/s via optimistic parallelism.
 
   Trade-offs include larger signatures (one per input) and wallet complexity for
@@ -997,8 +997,7 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   Contract Accounts, or smart contracts, lack private keys and execute predefined
   EVM bytecode only when triggered by external transactions or messages. Creating
   them incurs gas costs due to storage usage, and their nonce tracks deployed sub-contracts.
-  #figure(
-  table(
+  #figure(table(
     columns: 3,
     align: left,
     fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
@@ -1011,19 +1010,21 @@ f03d8f4d66a3fbcb9ee6fd3a580dca0624cbd8f6ec868e3890de4faeef71518f
   #accent[Account State Fields:]
   Every account stores four fields in the state trie:
 
--  Nonce: Sequential counter preventing replay attacks. For EOAs, increments per sent
-  transaction; for contracts, tracks deployed sub-contracts.
+  - Nonce: Sequential counter preventing replay attacks. For EOAs, increments per
+    sent
+    transaction, for contracts, tracks deployed sub-contracts.
 
--  Balance: ETH amount in wei (1 ETH = $10^18$ wei). Transferable via transactions.
+  - Balance: ETH amount in wei (1 ETH = $10^18$ wei). Transferable via transactions.
 
--  StorageRoot: Merkle Patricia trie root hash of persistent key-value storage. Empty
-  ("```0x56e81f...```") for EOAs; holds contract state variables for contracts.
+  - StorageRoot: Merkle Patricia trie root hash of persistent key-value storage.
+    Empty
+    ("```0x56e81f...```") for EOAs, holds contract state variables for contracts.
 
--  CodeHash: Keccak-256 hash of account code. EOAs use empty string hash ```0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470```,
-  contracts reference actual bytecode.
-#accent[Verification:]
+  - CodeHash: Keccak-256 hash of account code. EOAs use empty string hash ```0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470```,
+    contracts reference actual bytecode.
+  #accent[Verification:]
 
-```javascript 
+  ```javascript 
 const { ethers } = require("ethers");
 const emptyHash = ethers.keccak256(ethers.toUtf8Bytes(""));
 console.log(emptyHash);
@@ -1033,7 +1034,8 @@ console.log(emptyHash);
 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
   ```
   #accent[JSON State Examples:]
-#link("https://etherscan.io/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")[Vitalik Buterin's EOA (0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 via Infura/Etherscan)]
+  #link("https://etherscan.io/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")[Vitalik
+  Buterin's EOA (0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045 via Infura/Etherscan)]
   ```json 
 {
   "balance": "7539722942274336279",
@@ -1042,7 +1044,8 @@ console.log(emptyHash);
   "storageRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"
 }
   ```
-  #link("https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")[USDC Contract (0xA0b86a33Ed3D9B54f339d1D95d7A2dD5b57b32E6):]
+  #link("https://etherscan.io/address/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48")[USDC
+  Contract (0xA0b86a33Ed3D9B54f339d1D95d7A2dD5b57b32E6):]
   ```json 
 {
   "balance": "1500000000000000000000000",
@@ -1054,24 +1057,120 @@ console.log(emptyHash);
 ]
 
 #question("3. Security Implications (UTXO vs Account Models):")[
-Analyze:
-- Replay vulnerabilities
-- Transaction malleability
-- Double-spend handling
-- Smart contract attack surface
-- State bloat and scalability
+  Analyze:
+  - Replay vulnerabilities
+  - Transaction malleability
+  - Double-spend handling
+  - Smart contract attack surface
+  - State bloat and scalability
 ]
 
 #answer[
+  #accent[ Replay vulnerabilities ]
+  To get rid of replays, the UTXO system uses the approach of consuming outputs that
+  are assigned to particular transactions. After they have been used or spent, they
+  get eliminated from all the blockchains where they were present. This is not the
+  case with the account model where the usage count is related to the specific blockchain,
+  hence signatures can be replayed without any protection of EIP-155 chainId across
+  forks/chains.
+
+  #accent[ Transaction Malleability ]
+  With the UTXO system, transactions once submitted cannot be changed. However, changing
+  the signatures results in the creation of new transaction IDs (txids) which turns
+  the dependent transactions into conflicting ones. On the other hand, the account
+  model enabled signature replacement (before SegWit), which not only allowed for
+  txid changes but also created a scenario of double-spend races.
+  #figure(table(
+    columns: 3,
+    align: left,
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    [*Aspect*],          [*UTXO*],             [*Account model*],
+    [Replay Protectoin], [Output consumption], [Chain-specfici nonce],
+    [Malleability],      [Immutable txids],    [Signature swaps possible]
+  ), caption: [UTXO vs Account model])
+
+  #accent[ Double-Spend Handling ]
+  The UTXO model guarantees that double-spending will never happen. Any transaction
+  spending the same output twice will be rejected by the network through consensus.
+  The account model checks balances and sequences nonces, which may be affected by
+  race conditions during reorganization of blocks.
+
+  #accent[ Smart Contract Attack Surface ]
+
+  UTXO has a very few options for scripting (P2SH), which means that such attacks
+  are not likely to happen because Turing-complete loops or stateful contracts are
+  not possible. The account model has a powerful EVM that allows creating very complex
+  contracts but at the same time it is exposing the system to reentrancy (DAO hack),
+  integer overflows, and front-running attacks.
+
+  #accent[ State Bloat and Scalability ]
+
+  The UTXO approach eliminates the spent outputs, thus ensuring that the global state
+  remains small enough for parallel validation. The account model keeps state forever
+  for each user, which results in the trie growing exponentially, the network being
+  slow to catch up, and denial-of-service attacks via state writes (e.g., proposals
+  about state rents in 2021).
+
+  #accent[ Tradeoff Summary: ]
+
+  UTXO goes for security and simplicity first, so it is less programmable;
+  the account model, on the other hand, allows for dApps but with the concomitant
+  larger attack surface and state bloat.
 
 ]
 
 #question("4. EVM Architecture")[
-  Explain EVM bytecode execution, Stack-based model, Gas metering, and Error handling.
+  - Explain EVM bytecode execution
+  - Stack-based computation model
+  - Gas metering rules
+  - Error handling (revert, invalid opcode)
 ]
 
 #answer[
-  // [YOUR ANSWER HERE]
+  The Ethereum Virtual Machine (EVM) operates in a stack-based mode while executing
+  smart contract bytecode, handling transactions to modify the blockchain state and
+  simultaneously applying gas limits for the prevention of DoS attacks.
+
+  The Execution Flow of Bytecode
+  The EVM bytecode comprises opcodes (0x00-0xff) that are fetched one after the other
+  through the use of the Program Counter (PC). Each opcode takes operands from the
+  stack, does the computation, puts the result back on the stack, and moves the PC
+  forward. The execution begins from the code stored in the contract account's codeHash,
+  with context information such as the caller's address, the value transferred, and
+  the input calldata.
+
+  ``` ALLOW OP``` and ``` CREATE``` opcodes allow deep call stacks (up to 1024 frames)
+  to create
+  tree-like structures of execution for transactions.
+
+  #accent[ Stack-Based Computation Model ]
+  The EVM adopts a LIFO stack (maximum size of 1024 × 256-bit words) for mathematical
+  operations and controlling the flow:
+
+  - ``` PUSHn``` (0x60-0x7f): Loads constants (1-32 bytes)
+
+  - ``` DUPn/SWAPn``` : Stack manipulation
+
+  - Arithmetic: ``` ADD``` (0x01, 3 gas), ``` MUL``` (0x02, 5 gas), etc.
+
+  - Control: ``` JUMP/JUMPI``` (0x56/57) for branching
+
+  Memory (expandable byte array) and storage (persistent trie) accessed via ``` MLOAD/MSTORE```
+  (``` SLOAD/SSTORE``` ), stack serving as operand register.
+  ```
+Stack example: ADD operation
+Before: [5, 3]    PUSH1 5 → PUSH1 3 → ADD → [8]
+  ```
+  #accent[ Gas Metering Rules ]
+  Every opcode consumes fixed gas + dynamic costs:
+
+  - Base: 0-2000 gas (STOP=0, SSTORE=20000+)
+
+  - Tiered: Very low (1, ADD), Zero (64, POP), etc.
+
+  - Dynamic: Memory expansion (quadratic), SSTORE refunds (-4800 max per tx)
+
+  Transaction provides gasLimit × gasPrice; exhaustion triggers OutOfGas error, reverting state changes but consuming all gas (prevents infinite loops).
 ]
 
 #question("5. Smart Contracts")[
