@@ -1164,31 +1164,119 @@ Before: [5, 3]    PUSH1 5 → PUSH1 3 → ADD → [8]
   #accent[ Gas Metering Rules ]
   Every opcode consumes fixed gas + dynamic costs:
 
-  - Base: 0-2000 gas (STOP=0, SSTORE=20000+)
+  - Base: 0-2000 gas (``` STOP=0``` , ``` SSTORE=20000+``` )
 
-  - Tiered: Very low (1, ADD), Zero (64, POP), etc.
+  - Tiered: Very low (1, ``` ADD``` ), Zero (64, ``` POP``` ), etc.
 
-  - Dynamic: Memory expansion (quadratic), SSTORE refunds (-4800 max per tx)
+  - Dynamic: Memory expansion (quadratic), ``` SSTORE``` refunds (-4800 max per tx)
 
-  Transaction provides gasLimit × gasPrice; exhaustion triggers OutOfGas error, reverting state changes but consuming all gas (prevents infinite loops).
+  Transaction provides ``` gasLimit``` × ``` gasPrice``` , exhaustion triggers ``` OutOfGas```
+  error, reverting state changes but consuming all gas (prevents infinite loops).
+
+  #figure(table(
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    columns: (1fr, 1fr, 1fr),
+    align: left,
+    [Category], [Examples],                 [Gas Cost],
+    [Base Ops], [``` ADD``` , ``` POP``` ], [3-5 quicknode],
+    [Storage],  [``` SSTORE``` ],           [20,000+],
+    [Calls],    [``` CALL``` ],             [700 + subcall gas],
+  ))
+  #accent[Error Handling]
+
+  ``` REVERT``` (0xfd): An instant stop, rollback of the state, delivery of the data
+  through ``` RLDATA``` (EIP-140). The gas is refunded excluding the amount that
+  was consumed.
+
+  ``` INVALID``` (0xfe): Opcode that is not known → total gas cost loss, no refund.
+
+  ``` OutOfGas``` /``` StackOverflow``` : Automatic rolling back. The parent calls
+  pass on the errors to the top, thus maintaining the atomicity of the top-level
+  tx.
+  ```
+Example: require(false) → REVERT with "Error message"
+  ```
 ]
 
 #question("5. Smart Contracts")[
-  Explain gas cost model and storage. Why are writes expensive? Provide code optimization
-  example.
+  - Explain gas cost model
+  - Describe how contract storage works
+  - Explain why storage writes are expensive
+  - Provide an example of inefficient code → optimized code
 ]
 
 #answer[
-  *Inefficient Code:*
 
-  *Optimized Code:*
+  Smart contracts are executed on the EVM with gas metering that helps in preventing
+  any form of abuse, wherein the main costliest item is the storage operation that
+  is block chained and thus, persistent.
 
-  *Explanation:* ...
+  #accent[ Gas Cost Model ]
+  Gas is a measure of the computational workload: every opcode has a specified cost
+  (for example, ``` ADD=3``` , ``` SSTORE=20,000+``` ). When making a transaction,
+  you set the ``` gasLimit × gasPrice``` (gwei); if the gas runs out, the changes are reverted.
+  After EIP-1559, there is a combination of ``` baseFee``` (burned) + ``` priorityFee``` (to validators).
+  The total cost of the transaction is calculated as ``` gasUsed × effective gas price``` .
+
+  #accent[ Contract Storage Mechanism ]
+  Every contract on the Ethereum blockchain has its own individual storage consisting
+  of a 256-bit key-value Merkle Patricia trie. The slots in this trie are determined
+  deterministically by taking ``` keccak256(slot + contract_address)``` . Mappings or arrays
+  have their own indexing based on hashing. When changes happen in the storage, they
+  are reflected in the stateRoot hash which requires full node re-synchronization.
+
+  #accent[ Why Storage Writes Are Expensive ]
+  ``` SSTORE``` rewriting of the trie nodes impacts more than 10,000 state entries as through
+  Merkle proofs. Reads done via ``` SLOAD``` are cacheable but they still require traversal
+  of the trie. The global state bloat is huge and it affects all the nodes (300GB+
+  mainnet). The gas used reflects the disk I/O and consensus cost.
+
+  #accent[ Inefficient vs Optimized Code ]
+  Inefficient (separate calls):
+  ```solidity 
+  
+function transfer(address to, uint256 amount) public {
+    balances[msg.sender] -= amount;  // SLOAD + SSTORE
+    balances[to] += amount;          // SLOAD + SSTORE 
+}
+  ```
+  Optimized (single tx):
+  ```solidity
+function batchTransfer(address[] calldata users, uint256[] calldata amounts) external {
+    require(users.length == amounts.length);
+    for (uint i = 0; i < users.length; i++) {
+        balances[users[i]] += amounts[i]; // Where is syntax highlighting 😔😢
+    }
+}
+  ```
+  Inefficient:
+
+  ```solidity
+// Inefficient: 'myValue' is read from storage twice
+uint256 public myValue;
+function modifyAndCheck() public returns (bool) {
+    myValue += 1; // SLOAD 1, SSTORE
+    if (myValue > 100) { // SLOAD 2
+        return true;
+    }
+    return false;
+}
+  ```
+  Optimized:
+  ```solidity
+// Optimized: 'myValue' is cached after the first read
+uint256 public myValue;
+function modifyAndCheckOptimized() public returns (bool) {
+    uint256 _myValue = myValue; // SLOAD 1
+    _myValue += 1;
+    myValue = _myValue; // SSTORE
+    if (_myValue > 100) { // Uses cached value (cheap)
+        return true;
+    }
+    return false;
+}
+  ```
 ]
-
-// ==========================================
-// MODULE 5: LAB EXERCISE
-// ==========================================
 
 = Module 5: Lab Exercise: Wallets & Transactions
 
@@ -1197,7 +1285,11 @@ Before: [5, 3]    PUSH1 5 → PUSH1 3 → ADD → [8]
 ]
 
 #answer[
-  *Public Address:* `0x...`
+  #figure(grid(
+    columns: 3,
+    gutter: 2mm,
+    image("assets/wall2.jpg"), image("assets/wall1.jpg"), image("assets/addr.jpg"),
+  ), caption: [Screenshots of MetaMask])
 ]
 
 #question("Step 2: Transaction Inspection")[
@@ -1205,25 +1297,121 @@ Before: [5, 3]    PUSH1 5 → PUSH1 3 → ADD → [8]
 ]
 
 #answer[
-  *Selected Blockchain:* Ethereum/Bitcoin
+  *Selected Blockchain:* Ethereum
 
-  *Transaction Hash:* `0x...`
-
-  *Decoded Fields:*
+  *Transaction Hash:* `0xe9bd7e3a4d02c7bd9e8468dc206e7c3b16a5eb65865b65b3bd701278e2c50e0b`
+  #colbreak()
+  #accent[ *Decoded Fields:* ]
   #table(
     columns: (1fr, 2fr),
     inset: 8pt,
-    [*Field*],    [*Value / Explanation*],
-    [Nonce],      [...],
-    [Gas Price],  [...],
-    [Gas Limit],  [...],
-    [Value],      [...],
-    [Data/Input], [...],
-    [To],         [...],
-  )
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    [*Field*],         [*Value / Explanation*],
+    [Nonce],           [26],
+    [Gas Price],       [0.25 Gwei (245217079 Wei)],
+    [Gas Limit],       [308535 units],
+    [Gas Usage],       [199431 (64.64%)],
+    [Value],           [0.0200 ETH (20000000000000000 Wei) #text(size: 0.8em, fill: rgb("#555"))[(\$59.16)]],
+    [Transaction Fee], [0.000048903887282049 ETH
+    #text(size: 0.8em, fill: rgb("#555"))[(\$0.14)]],
+    [Data/Input],      [
+      Function: depositNative(tuple order)
 
-  *Logic Explanation:*
-  // Explain how gas was calculated or UTXO consumed
+      MethodID: 0x1c0166aa\
+      [0]: 00000000000000000000000000000000000000000000000000\
+      470de4df820000
+      \
+      [1]: 00000000000000000000000000000000000000000000000000\
+      46e97b0b2f3e40
+      \
+      [2]: 000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeee\
+      eeeeeeeeeeeeee
+      \
+      [3]: 000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeee\
+      eeeeeeeeeeeeee
+      \
+      [4]: 00000000000000000000000000000000000000000000000000\
+      0000006940c2e3
+      \
+      [5]: 00000000000000000000000000000000000000000000000000\
+      0000006940c33d
+      \
+      [6]: 00000000000000000000000000000000000000000000000000\
+      00000000007595
+      \
+      [7]: 00000000000000000000000000000000000000000000000000\
+      000000000075e8
+      \
+      [8]: 0000000000000000000000002063ca0500112510726834aadf\
+      4cbddea698f988
+      \
+      [9]: 0000000000000000000000002063ca0500112510726834aadf\
+      4cbddea698f988
+
+    ],
+    [From],            [0x2063ca0500112510726834aadf4cbddea698f988],
+    [To],              [0x0736bdc975af0675b9a045384efed91360d25479],
+  )
+  In this example we calculated the gas fee using the values gas price (0.25 Gwei) and gas usage (199431) = $0.25 * 199431$ = 49,857.75 Gwei. Which after converting to the ETH (1 ETH = $10^9$ Gwei) will be 0.000048903887282049 ETH
+
+  #accent[Decoded input]
+  #figure(table(
+    fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
+    columns: (1fr, 2fr),
+    align: left,
+    [
+      *Field*
+    ],                         [
+      *Value / Explanation*
+    ],
+    // uint128 inputAmount
+    [inputAmount (uint128)],  [
+      20000000000000000 \
+      // 0.0200 ETH
+    ],
+    // uint128 outputAmount
+    [outputAmount (uint128)], [
+      19959963047640640 \
+      // ~0.01995996304764064 ETH
+    ],
+    // address inputToken
+    [inputToken (address)],   [
+      0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE \
+      // Native ETH placeholder
+    ],
+    // address outputToken
+    [outputToken (address)],  [
+      0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE \
+      // Native ETH placeholder
+    ],
+    // uint32 startTime
+    [startTime (uint32)],     [
+      1765851875 \
+      // Unix timestamp
+    ],
+    // uint32 endTime
+    [endTime (uint32)],       [
+      1765851965 \
+      // Unix timestamp
+    ],
+    // uint32 srcEid
+    [srcEid (uint32)],        [
+      30101
+    ],
+    // uint32 dstEid
+    [dstEid (uint32)],        [
+      30184
+    ],
+    // address offerer
+    [offerer (address)],      [
+      0x2063cA0500112510726834aaDf4CbDdEa698F988
+    ],
+    // address recipient
+    [recipient (address)],    [
+      0x2063cA0500112510726834aaDf4CbDdEa698F988
+    ],
+  ))
+
 ]
 
 // ==========================================
