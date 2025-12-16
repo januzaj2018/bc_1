@@ -309,12 +309,12 @@
     align: left,
     fill: (x, y) => if y == 0 { accent-color.lighten(80%) },
     inset: 10pt,
-    [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*],                                          [*Fault-Tolerance*],
+    [*Ledger Type*], [*Trust*],                                                         [*Confidentiality*], [*Fault-Tolerance*],
     [Centralized],   [Traditional Banking Systems (like SWIFT, single bank ledgers)],   [Corporate
-    ERP Systems (data managed by the company)],                  [Traditional Web2
+    ERP Systems (data managed by the company)],                    [Traditional Web2
     Applications (for example, a service running on one cloud server/database)],
     [Distributed],   [Bitcoin (Public, permissionless network based on Proof-of-Work)], [Ethereum
-    (Public DApp platform using smart contracts and consensus)], [Consortium
+    (Public DApp platform using smart contracts and consensus)],                    [Consortium
     Blockchains
     (like supply chain solutions involving several organizations using permissioned
     networks)],
@@ -463,7 +463,7 @@
     inset: 10pt,
     [],                  [*Bitcoin*],                               [*Ethereum*],
     [Purpose],           [A credible alternative to traditional fiat currencies (medium
-    of exchange, potential store of value)],  [A
+    of exchange, potential store of value)],                                          [A
     platform to run programmatic contracts and applications via Ether],
     [Consensus],         [Proof-of-Work (PoW)],                     [Proof-of-Stake
     (PoS) (as per forecast, reflecting the transition)],
@@ -1214,20 +1214,26 @@ Example: require(false) → REVERT with "Error message"
   #accent[ Gas Cost Model ]
   Gas is a measure of the computational workload: every opcode has a specified cost
   (for example, ``` ADD=3``` , ``` SSTORE=20,000+``` ). When making a transaction,
-  you set the ``` gasLimit × gasPrice``` (gwei); if the gas runs out, the changes are reverted.
-  After EIP-1559, there is a combination of ``` baseFee``` (burned) + ``` priorityFee``` (to validators).
-  The total cost of the transaction is calculated as ``` gasUsed × effective gas price``` .
+  you set the ``` gasLimit × gasPrice``` (gwei); if the gas runs out, the changes
+  are reverted.
+  After EIP-1559, there is a combination of ``` baseFee``` (burned) + ``` priorityFee```
+  (to validators).
+  The total cost of the transaction is calculated as ``` gasUsed × effective gas price```
+  .
 
   #accent[ Contract Storage Mechanism ]
   Every contract on the Ethereum blockchain has its own individual storage consisting
   of a 256-bit key-value Merkle Patricia trie. The slots in this trie are determined
-  deterministically by taking ``` keccak256(slot + contract_address)``` . Mappings or arrays
+  deterministically by taking ``` keccak256(slot + contract_address)``` . Mappings
+  or arrays
   have their own indexing based on hashing. When changes happen in the storage, they
   are reflected in the stateRoot hash which requires full node re-synchronization.
 
   #accent[ Why Storage Writes Are Expensive ]
-  ``` SSTORE``` rewriting of the trie nodes impacts more than 10,000 state entries as through
-  Merkle proofs. Reads done via ``` SLOAD``` are cacheable but they still require traversal
+  ``` SSTORE``` rewriting of the trie nodes impacts more than 10,000 state entries
+  as through
+  Merkle proofs. Reads done via ``` SLOAD``` are cacheable but they still require
+  traversal
   of the trie. The global state bloat is huge and it affects all the nodes (300GB+
   mainnet). The gas used reflects the disk I/O and consensus cost.
 
@@ -1352,7 +1358,9 @@ function modifyAndCheckOptimized() public returns (bool) {
     [From],            [0x2063ca0500112510726834aadf4cbddea698f988],
     [To],              [0x0736bdc975af0675b9a045384efed91360d25479],
   )
-  In this example we calculated the gas fee using the values gas price (0.25 Gwei) and gas usage (199431) = $0.25 * 199431$ = 49,857.75 Gwei. Which after converting to the ETH (1 ETH = $10^9$ Gwei) will be 0.000048903887282049 ETH
+  In this example we calculated the gas fee using the values gas price (0.25 Gwei)
+  and gas usage (199431) = $0.25 * 199431$ = 49,857.75 Gwei. Which after converting
+  to the ETH (1 ETH = $10^9$ Gwei) will be 0.000048903887282049 ETH
 
   #accent[Decoded input]
   #figure(table(
